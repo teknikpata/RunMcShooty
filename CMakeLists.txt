@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.2)
+set(CMAKE_CXX_STANDARD 17)
+project(RunMcShooty)
+set(SOURCE src/main.cpp src/game.cpp src/collision_box.cpp src/entity.cpp src/movable_entity.cpp)
+find_package(SFML 2.5.1 COMPONENTS system window graphics network audio REQUIRED)
+add_executable(${PROJECT_NAME} ${SOURCE})
+target_link_libraries(${PROJECT_NAME}  sfml-system sfml-window sfml-graphics sfml-network sfml-audio)
