@@ -31,9 +31,8 @@ private:
 	void update(const float& deltaTime);
 	void render();
 	Collisions getCollisions();
-	Collisions getVerticalCollisions();
-	Collisions getHorizontalCollisions();
-	void resolve(const Collisions& collisions);
+
+    void resolve(const Collisions& collisions);
 	sf::RenderWindow* window;
 	std::vector<Entity*> entities;
 	std::vector<MovableEntity*> movables;
