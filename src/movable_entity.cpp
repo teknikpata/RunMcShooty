@@ -10,7 +10,7 @@ void MovableEntity::update(const float& deltaTime) {
 	auto position = getPosition();
 	sf::Vector2f acceleration;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-		addForce(sf::Vector2f(0, -600));
+		jump();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 		acceleration += sf::Vector2f(-1, 0);
@@ -22,6 +22,7 @@ void MovableEntity::update(const float& deltaTime) {
 	acceleration += -velocity * friction;
 	position += (acceleration * 0.5f * (deltaTime * deltaTime)) + (velocity * deltaTime);
 	velocity += acceleration * deltaTime;
+	//TODO: Dont let entities handle gravity.
 	addForce(sf::Vector2f(0, 50.f));
 	setPosition(position); 
 }
@@ -37,4 +38,16 @@ void MovableEntity::addForce(const sf::Vector2f& force) {
 
 sf::Vector2f MovableEntity::getVelocity() const {
     return velocity;
+}
+
+void MovableEntity::IsGrounded() {
+    isGrounded = true;
+    jumpCharges = maxJumpCharges;
+}
+
+void MovableEntity::jump() {
+    if(jumpCharges > 0){
+        jumpCharges--;
+        addForce(sf::Vector2f(0, -2000));
+    }
 }

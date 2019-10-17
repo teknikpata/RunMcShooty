@@ -23,7 +23,7 @@ Game::~Game() {
 
 void Game::run() {
     sf::Clock clock;
-    float stepTime = 1.0f / 60.0f;
+    float stepTime = 1.0f / 120.0f;
     float sum = 0.f;
     while (window->isOpen()) {
         float deltaTime = clock.restart().asSeconds();
@@ -53,36 +53,88 @@ Game::Collisions Game::getCollisions() {
             if (box1.intersects(box2)) {
                 float distanceX, distanceY = 0;
                 float correctionX, correctionY = 0;
-
+                CollisionBox::Side side = CollisionBox::Side::NONE;
+                //TODO: Clean up, this is way to complex than it really needs to be.
                 //Check if completely vertical
-                if(box1.getLeft() > box2.getLeft() && box1.getRight() < box2.getRight()) {
-                    printf("Completely Vertical Collision \n");
-                    // TODO: Move to resolve collisions
-                    e1->multiplyVelocity(sf::Vector2f(1.f, 0.f));
-                    if(box1.getMiddlePoint().y > box2.getMiddlePoint().y) {
+                if (box1.getLeft() > box2.getLeft() && box1.getRight() < box2.getRight()) {
+                    if (box1.getMiddlePoint().y > box2.getMiddlePoint().y) {
                         distanceY = box2.getBottom() - box1.getTop();
                         correctionY = distanceY;
-                    }
-                    else {
+                        side = CollisionBox::Side::TOP;
+                    } else {
                         distanceY = box1.getBottom() - box2.getTop();
                         correctionY = -distanceY;
+                        side = CollisionBox::Side::BOTTOM;
                     }
-                }
-                if(box1.getTop() > box2.getTop() && box1.getBottom() < box2.getBottom()) {
-                    printf("Completely Horizontal Collision \n");
-                    //TODO: move to resolve collisions
-                    e1->multiplyVelocity(sf::Vector2f(0.f, 1.f));
-                    if(box1.getMiddlePoint().x > box2.getMiddlePoint().x) {
+                } else if (box1.getTop() > box2.getTop() && box1.getBottom() < box2.getBottom()) {
+                    if (box1.getMiddlePoint().x > box2.getMiddlePoint().x) {
                         distanceX = box2.getRight() - box1.getLeft();
                         correctionX = distanceX;
-                    }
-                    else {
+                        side = CollisionBox::Side::RIGHT;
+                    } else {
                         distanceX = box1.getRight() - box2.getLeft();
                         correctionX = -distanceX;
+                        side = CollisionBox::Side::LEFT;
+                    }
+                } else if (box1.getMiddlePoint().x > box2.getMiddlePoint().x) {
+                    if (box1.getMiddlePoint().y > box2.getMiddlePoint().y) {
+                        //Bottom Right corner
+                        distanceX = box2.getRight() - box1.getLeft();
+                        distanceY = box2.getBottom() - box1.getTop();
+                        if (distanceX < distanceY) {
+                            correctionX = distanceX;
+                            distanceY = correctionY = 0;
+                            side = CollisionBox::Side::LEFT;
+                        } else {
+                            correctionX = distanceX = 0;
+                            correctionY = distanceY;
+                            side = CollisionBox::Side::TOP;
+                        }
+                    } else {
+                        //Top Right Corner
+                        distanceX = box2.getRight() - box1.getLeft();
+                        distanceY = box1.getBottom() - box2.getTop();
+                        if (distanceX < distanceY) {
+                            correctionX = distanceX;
+                            distanceY = correctionY = 0;
+                            side = CollisionBox::Side::LEFT;
+                        } else {
+                            correctionX = distanceX = 0;
+                            correctionY = -distanceY;
+                            side = CollisionBox::Side::BOTTOM;
+                        }
+                    }
+                } else {
+                    if (box1.getMiddlePoint().y > box2.getMiddlePoint().y) {
+                        //Bottom Left corner
+                        distanceX = box1.getRight() - box2.getLeft();
+                        distanceY = box2.getBottom() - box1.getTop();
+                        if (distanceX < distanceY) {
+                            correctionX = -distanceX;
+                            distanceY = correctionY = 0;
+                            side = CollisionBox::Side::RIGHT;
+                        } else {
+                            correctionX = distanceX = 0;
+                            correctionY = distanceY;
+                            side = CollisionBox::Side::TOP;
+                        }
+                    } else {
+                        //Top Left Corner
+                        distanceX = box1.getRight() - box2.getLeft();
+                        distanceY = box1.getBottom() - box2.getTop();
+                        if (distanceX < distanceY) {
+                            correctionX = -distanceX;
+                            distanceY = correctionY = 0;
+                            side = CollisionBox::Side::RIGHT;
+                        } else {
+                            correctionX = distanceX = 0;
+                            correctionY = -distanceY;
+                            side = CollisionBox::Side::BOTTOM;
+                        }
                     }
                 }
-                //corner collision.
-                collisions.emplace_back(e1, e2, sf::Vector2f{correctionX, correctionY}, distanceX, distanceY);
+
+                collisions.emplace_back(e1, e2, sf::Vector2f{correctionX, correctionY}, distanceX, distanceY, side);
             }
         }
     }
@@ -92,16 +144,15 @@ Game::Collisions Game::getCollisions() {
 void Game::resolve(const Game::Collisions &collisions) {
     for (const auto &collision : collisions) {
         auto movEntity = collision.e1;
-        //auto timeX = collision.distanceX / movEntity->getVelocity().x;
-        //auto timeY = collision.distanceY / movEntity->getVelocity().y;
-        // if (timeX > timeY) {
-            movEntity->move(collision.depth);
-        // } else if (timeY > timeX) {
-        //     std::cout << "Vertical collision" << std::endl;
-        //     movEntity->move(collision.depth);
-        //     movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
-        // }
-
+        movEntity->move(collision.depth);
+        if (collision.side == CollisionBox::Side::RIGHT || collision.side == CollisionBox::Side::LEFT) {
+            movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
+        } else if (collision.side == CollisionBox::Side::TOP) {
+            movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
+        } else if (collision.side == CollisionBox::Side::BOTTOM) {
+            movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
+            movEntity->IsGrounded();
+        }
     }
 }
 

@@ -9,9 +9,14 @@ public:
 	void multiplyVelocity(const sf::Vector2f& vector);
 	void update(const float& deltaTime) override;
 	void addForce(const sf::Vector2f& force);
+	void jump();
+	void IsGrounded();
 
 	sf::Vector2f getVelocity() const;
 protected:
+    bool isGrounded;
+    int jumpCharges;
+    int maxJumpCharges = 1;
 	sf::Vector2f velocity;
 	float speed = 1600.f;
 	float friction = 6.f;

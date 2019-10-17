@@ -2,6 +2,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <math.h>
 
+//TODO: Use namespace instead of class.
 class Math {
 public:
 	static float vectorLength(const sf::Vector2f& v) {

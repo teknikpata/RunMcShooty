@@ -3,20 +3,19 @@
 
 
 class CollisionBox {
-	enum class Side {
-		TOP,
-		BOTTOM,
-		LEFT,
-		RIGHT,
-		NONE
-	};
-	enum class Constraints {
-		VERTICAL,
-		HORIZONTAL,
-		NONE
-	};
-
 public:
+    enum class Side {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        NONE
+    };
+    enum class Constraints {
+        VERTICAL,
+        HORIZONTAL,
+        NONE
+    };
 	CollisionBox(const sf::Vector2f& position, const sf::Vector2f& size, Constraints collisionCheck = Constraints::NONE);
 	~CollisionBox();
 
