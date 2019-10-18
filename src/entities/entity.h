@@ -4,7 +4,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-#include "collision_box.h"
+#include "utils/collision_box.h"
 
 class Entity
 {

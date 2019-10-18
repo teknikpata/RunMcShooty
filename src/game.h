@@ -1,7 +1,7 @@
 #pragma once
-#include "entity.h"
+#include "entities/entity.h"
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "movable_entity.h"
+#include "entities/movable_entity.h"
 
 class Game
 {

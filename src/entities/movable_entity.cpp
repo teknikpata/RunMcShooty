@@ -1,6 +1,6 @@
 #include "movable_entity.h"
 #include <SFML/Window/Keyboard.hpp>
-#include "math.h"
+#include "../utils/math.h"
 
 MovableEntity::MovableEntity(const sf::Vector2f& position, const sf::Vector2f& size) :
 	Entity(position, size) {

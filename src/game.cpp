@@ -1,7 +1,7 @@
 #include "game.h"
 
 #include <SFML/Window/Event.hpp>
-#include "movable_entity.h"
+#include "entities/movable_entity.h"
 
 Game::Game() {
     window = new sf::RenderWindow(sf::VideoMode(1024, 800), "RunMcShooty");
