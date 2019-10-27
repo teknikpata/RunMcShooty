@@ -3,6 +3,10 @@ add_subdirectory(entities)
 
 add_executable(rms main.cpp game.cpp)
 
+file(COPY
+        ${CMAKE_SOURCE_DIR}/assets/
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/assets/)
+
 target_include_directories(entities PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>

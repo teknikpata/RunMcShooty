@@ -2,7 +2,9 @@ set(ENTITIES_FILES
         entity.h
         entity.cpp
         movable_entity.h
-        movable_entity.cpp)
+        movable_entity.cpp
+        sprite.h
+        sprite.cpp)
 
 add_library(entities ${ENTITIES_FILES})
 find_package(SFML 2.5.1 COMPONENTS graphics REQUIRED)

@@ -22,6 +22,8 @@ public:
 	bool intersects(CollisionBox& other) const;
 	bool contains(sf::Vector2f& point);
 
+    void render(sf::RenderTarget* target);
+
 	void setPosition(const sf::Vector2f& newPosition);
 	void move(const sf::Vector2f& offset);
 	sf::Vector2f getPosition() const;

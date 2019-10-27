@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entity.h"
+#include "entities/sprite.h"
 
 class MovableEntity : public Entity {
 public:
@@ -8,6 +9,7 @@ public:
 	virtual ~MovableEntity() = default;
 	void multiplyVelocity(const sf::Vector2f& vector);
 	void update(const float& deltaTime) override;
+	void render(sf::RenderTarget* renderTarget) override;
 	void addForce(const sf::Vector2f& force);
 	void jump();
 	void IsGrounded();

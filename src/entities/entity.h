@@ -5,11 +5,13 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include "utils/collision_box.h"
+#include "entities/sprite.h"
 
 class Entity
 {
 public:
-	Entity(const sf::Vector2f& position, const sf::Vector2f& size);
+	Entity(const sf::Vector2f& position, const std::string& filePath);
+    Entity(const sf::Vector2f& position, const std::string& filePath, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell);
 	virtual ~Entity() = default;
 	virtual void update(const float& deltaTime);
 	virtual void render(sf::RenderTarget* renderTarget);
@@ -22,6 +24,6 @@ public:
     sf::Vector2f getVelocity();
 
 protected:
-	sf::RectangleShape shape;
+	Sprite sprite;
 	CollisionBox box;
 };

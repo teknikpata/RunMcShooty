@@ -7,9 +7,11 @@ Game::Game() {
     window = new sf::RenderWindow(sf::VideoMode(1024, 800), "RunMcShooty");
     movables.push_back(new MovableEntity(sf::Vector2f(200, 225), sf::Vector2f(50, 50)));
     entities.push_back(movables.front());
-    entities.push_back(new Entity(sf::Vector2f(0, 265), sf::Vector2f(75, 50)));
-    entities.push_back(new Entity(sf::Vector2f(400, 175), sf::Vector2f(100, 600)));
-    entities.push_back(new Entity(sf::Vector2f(0, 275), sf::Vector2f(600, 50)));
+    entities.push_back(new Entity(sf::Vector2f(200, 265),"assets/graphics/block.png"));
+    entities.push_back(new Entity(sf::Vector2f(400, 400), "assets/graphics/platform.png"));
+    entities.push_back(new Entity(sf::Vector2f(200, 400), "assets/graphics/platform.png"));
+    entities.push_back(new Entity(sf::Vector2f(0, 400), "assets/graphics/platform.png"));
+    entities.push_back(new Entity(sf::Vector2f(400, 275), "assets/graphics/pillar.png"));
 }
 
 Game::~Game() {
@@ -47,7 +49,6 @@ Game::Collisions Game::getCollisions() {
         for (auto e2 : entities) {
             if (e1 == e2)
                 continue;
-
             auto box1 = e1->getBounds();
             auto box2 = e2->getBounds();
             if (box1.intersects(box2)) {

@@ -1,3 +1,5 @@
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "collision_box.h"
 
 CollisionBox::CollisionBox(const sf::Vector2f &position, const sf::Vector2f &size, const Constraints constraints) :
@@ -28,6 +30,16 @@ bool CollisionBox::intersects(CollisionBox &other) const {
            position.x + size.x > other.position.x &&
            position.y < other.position.y + other.size.y &&
            position.y + size.y > other.position.y;
+}
+
+void CollisionBox::render(sf::RenderTarget* target){
+    sf::RectangleShape rect;
+    rect.setPosition(position);
+    rect.setSize(size);
+    rect.setOutlineColor(sf::Color::Magenta);
+    rect.setOutlineThickness(5.f);
+    rect.setFillColor(sf::Color::Transparent);
+    target->draw(rect);
 }
 
 sf::Vector2f CollisionBox::getPosition() const {
