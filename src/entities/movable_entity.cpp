@@ -2,17 +2,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "utils/math.h"
 
-MovableEntity::MovableEntity(const sf::Vector2f& position, const sf::Vector2f& size) :
-        Entity(position, "assets/graphics/player.png", 2, 2, 2.f) {
-    sprite.setPosition(position);
+MovableEntity::MovableEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
+    Entity(position, collidable, sprite) {
 }
 
+MovableEntity::~MovableEntity() = default;
+
 void MovableEntity::update(const float& deltaTime) {
-    auto position = getPosition();
     sf::Vector2f acceleration;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        jump();
-    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
         acceleration += sf::Vector2f(-1, 0);
     }
@@ -46,15 +43,7 @@ sf::Vector2f MovableEntity::getVelocity() const {
     return velocity;
 }
 
-void MovableEntity::IsGrounded() {
-    isGrounded = true;
-    jumpCharges = maxJumpCharges;
-}
-
-void MovableEntity::jump() {
-    if (jumpCharges > 0) {
-        jumpCharges--;
-        addForce(sf::Vector2f(0, -2000));
-    }
+void MovableEntity::notifyGrounded() {
+    grounded = true;
 }
 

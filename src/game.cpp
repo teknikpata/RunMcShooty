@@ -2,16 +2,22 @@
 
 #include <SFML/Window/Event.hpp>
 #include "entities/movable_entity.h"
+#include "entities/static_entity.h"
 
 Game::Game() {
     window = new sf::RenderWindow(sf::VideoMode(1024, 800), "RunMcShooty");
-    movables.push_back(new MovableEntity(sf::Vector2f(200, 225), sf::Vector2f(50, 50)));
+    Sprite playerSprite{"assets/graphics/player.png", 2, 2, .5f};
+    Sprite platformSprite{"assets/graphics/platform.png"};
+    Sprite pillarSprite{"assets/graphics/pillar.png"};
+
+    movables.push_back(new MovableEntity(sf::Vector2f(200, 225), true, playerSprite));
     entities.push_back(movables.front());
-    entities.push_back(new Entity(sf::Vector2f(200, 265),"assets/graphics/block.png"));
-    entities.push_back(new Entity(sf::Vector2f(400, 400), "assets/graphics/platform.png"));
-    entities.push_back(new Entity(sf::Vector2f(200, 400), "assets/graphics/platform.png"));
-    entities.push_back(new Entity(sf::Vector2f(0, 400), "assets/graphics/platform.png"));
-    entities.push_back(new Entity(sf::Vector2f(400, 275), "assets/graphics/pillar.png"));
+
+    entities.push_back(new StaticEntity(sf::Vector2f(200, 265), true, platformSprite));
+    entities.push_back(new StaticEntity(sf::Vector2f(400, 400), true, platformSprite));
+    entities.push_back(new StaticEntity(sf::Vector2f(200, 400), true, platformSprite));
+    entities.push_back(new StaticEntity(sf::Vector2f(0, 400),  true, platformSprite));
+    entities.push_back(new StaticEntity(sf::Vector2f(400, 275),  true, pillarSprite));
 }
 
 Game::~Game() {
@@ -19,7 +25,6 @@ Game::~Game() {
         delete entities.back();
         entities.pop_back();
     }
-
     delete window;
 }
 
@@ -152,7 +157,7 @@ void Game::resolve(const Game::Collisions &collisions) {
             movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
         } else if (collision.side == CollisionBox::Side::BOTTOM) {
             movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
-            movEntity->IsGrounded();
+            movEntity->notifyGrounded();
         }
     }
 }

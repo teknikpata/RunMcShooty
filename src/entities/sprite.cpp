@@ -25,8 +25,7 @@ Sprite::Sprite(const std::string& filePath) :
     sprite.setTextureRect({currentPosition.x, currentPosition.y, cellSize.x, cellSize.y});
 }
 
-Sprite::~Sprite() {
-}
+Sprite::~Sprite()  = default;
 
 void Sprite::update(const float& deltaTime) {
     if (!animated)

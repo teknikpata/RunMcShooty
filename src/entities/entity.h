@@ -10,20 +10,26 @@
 class Entity
 {
 public:
-	Entity(const sf::Vector2f& position, const std::string& filePath);
-    Entity(const sf::Vector2f& position, const std::string& filePath, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell);
-	virtual ~Entity() = default;
-	virtual void update(const float& deltaTime);
-	virtual void render(sf::RenderTarget* renderTarget);
+	Entity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite);
+	virtual ~Entity();
+
+	virtual void update(const float& deltaTime) = 0;
+	virtual void render(sf::RenderTarget* renderTarget) = 0;
+
 	sf::Vector2f getPosition() const;
 	void setPosition(const sf::Vector2f& newPosition);
+	bool isCollidable() const;
+	void setCollidable(const bool newCollidable);
     void move(const sf::Vector2f& offset);
 	const CollisionBox& getBounds() const;
 	sf::Vector2f getSize() const;
 
+	//TODO: move into MovableEntity class
     sf::Vector2f getVelocity();
 
 protected:
+    sf::Vector2f position;
+    bool collidable;
 	Sprite sprite;
 	CollisionBox box;
 };

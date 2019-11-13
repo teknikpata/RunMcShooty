@@ -1,38 +1,37 @@
 #include "entity.h"
 
-Entity::Entity(const sf::Vector2f& position, const std::string& filePath) :
-    sprite(filePath),
+Entity::Entity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
+    position(position),
+    collidable(collidable),
+    sprite(sprite),
     box(position, sprite.getSize()){
-    sprite.setPosition(position);
+   this->sprite.setPosition(position);
 }
 
-Entity::Entity(const sf::Vector2f& position, const std::string& filePath, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell) :
-    sprite(filePath, cellsX, cellsY, timePerCell),
-    box(position, sprite.getSize()){
-
-}
-
-void Entity::render(sf::RenderTarget* renderTarget) {
-    sprite.render(renderTarget);
-    box.render(renderTarget);
-}
-
-void Entity::update(const float& deltaTime) {
-    sprite.update(deltaTime);
-}
+Entity::~Entity() = default;
 
 sf::Vector2f Entity::getPosition() const {
-    return sprite.getPosition();
+    return position;
 }
 
 void Entity::setPosition(const sf::Vector2f& newPosition) {
-    sprite.setPosition(newPosition);
-    box.setPosition(newPosition);
+    position = newPosition;
+    sprite.setPosition(position);
+    box.setPosition(position);
+}
+
+bool Entity::isCollidable() const {
+    return collidable;
+}
+
+void Entity::setCollidable(const bool newCollidable) {
+    collidable = newCollidable;
 }
 
 void Entity::move(const sf::Vector2f& offset) {
-    sprite.move(offset);
-    box.move(offset);
+    position += offset;
+    sprite.setPosition(position);
+    box.setPosition(position);
 }
 
 const CollisionBox& Entity::getBounds() const {
@@ -42,5 +41,3 @@ const CollisionBox& Entity::getBounds() const {
 sf::Vector2f Entity::getSize() const {
     return box.getSize();
 }
-
-
