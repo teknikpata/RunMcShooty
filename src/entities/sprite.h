@@ -4,8 +4,8 @@
 
 class Sprite{
 public:
-    Sprite(const std::string& filePath, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell);
-    Sprite(const std::string& filePath);
+    Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell);
+    Sprite(std::shared_ptr<sf::Texture> texture);
     ~Sprite();
     void update(const float& deltaTime);
     void render(sf::RenderTarget* renderTarget);
@@ -15,7 +15,7 @@ public:
     sf::Vector2f getSize() const;
 
 private:
-    sf::Texture texture;
+    std::shared_ptr<sf::Texture> texture;
     sf::Sprite sprite;
     std::string filePath;
     sf::Vector2u spriteSheetSize;

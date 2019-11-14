@@ -3,12 +3,19 @@
 #include <SFML/Window/Event.hpp>
 #include "entities/movable_entity.h"
 #include "entities/static_entity.h"
+#include "managers/texture_manager.h"
 
 Game::Game() {
     window = new sf::RenderWindow(sf::VideoMode(1024, 800), "RunMcShooty");
-    Sprite playerSprite{"assets/graphics/player.png", 2, 2, .5f};
-    Sprite platformSprite{"assets/graphics/platform.png"};
-    Sprite pillarSprite{"assets/graphics/pillar.png"};
+    TextureManager textureManager;
+
+    textureManager.load("player", "assets/graphics/player.png");
+    textureManager.load("platform", "assets/graphics/platform.png");
+    textureManager.load("pillar", "assets/graphics/pillar.png");
+
+    Sprite playerSprite{textureManager.get("player"), 2, 2, .5f};
+    Sprite platformSprite{textureManager.get("platform")};
+    Sprite pillarSprite{textureManager.get("pillar")};
 
     movables.push_back(new MovableEntity(sf::Vector2f(200, 225), true, playerSprite));
     entities.push_back(movables.front());
@@ -17,7 +24,7 @@ Game::Game() {
     entities.push_back(new StaticEntity(sf::Vector2f(400, 400), true, platformSprite));
     entities.push_back(new StaticEntity(sf::Vector2f(200, 400), true, platformSprite));
     entities.push_back(new StaticEntity(sf::Vector2f(0, 400),  true, platformSprite));
-    entities.push_back(new StaticEntity(sf::Vector2f(400, 275),  true, pillarSprite));
+    entities.push_back(new StaticEntity(sf::Vector2f(400, 275),  false, pillarSprite));
 }
 
 Game::~Game() {
@@ -52,7 +59,7 @@ Game::Collisions Game::getCollisions() {
     Game::Collisions collisions;
     for (auto e1 : movables) {
         for (auto e2 : entities) {
-            if (e1 == e2)
+            if (e1 == e2 || not e2->isCollidable())
                 continue;
             auto box1 = e1->getBounds();
             auto box2 = e2->getBounds();

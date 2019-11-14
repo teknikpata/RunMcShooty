@@ -1,27 +1,27 @@
 #include "sprite.h"
 
-Sprite::Sprite(const std::string& filePath, const unsigned int cellsX, const unsigned int cellsY,
+Sprite::Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY,
                const float& timePerCell) :
-        filePath(filePath),
+        texture(texture),
         timePerCell(timePerCell),
         animated(true){
-    texture.loadFromFile(filePath);
-    spriteSheetSize = texture.getSize();
+    elapsedTime = 0;
+    spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
     cellSize = {static_cast<int>(spriteSheetSize.x / cellsX), static_cast<int>(spriteSheetSize.y / cellsY)};
-    sprite.setTexture(texture);
+    sprite.setTexture(*texture);
     sprite.setTextureRect({currentPosition.x, currentPosition.y, cellSize.x, cellSize.y});
 
 }
 
-Sprite::Sprite(const std::string& filePath) :
-        filePath(filePath),
+Sprite::Sprite(std::shared_ptr<sf::Texture> texture) :
+        texture(texture),
         animated(false){
-    texture.loadFromFile(filePath);
-    spriteSheetSize = texture.getSize();
+    elapsedTime = 0;
+    spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
     cellSize = {static_cast<int>(spriteSheetSize.x), static_cast<int>(spriteSheetSize.y)};
-    sprite.setTexture(texture);
+    sprite.setTexture(*texture);
     sprite.setTextureRect({currentPosition.x, currentPosition.y, cellSize.x, cellSize.y});
 }
 
@@ -30,7 +30,6 @@ Sprite::~Sprite()  = default;
 void Sprite::update(const float& deltaTime) {
     if (!animated)
         return;
-
     elapsedTime += deltaTime;
     if (elapsedTime < timePerCell)
         return;
