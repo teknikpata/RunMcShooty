@@ -1,5 +1,7 @@
 #include <iostream>
+#include <cassert>
 #include "SceneNode.h"
+
 
 SceneNode::SceneNode() :
     parent{nullptr} {

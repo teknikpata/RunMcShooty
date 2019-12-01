@@ -27,7 +27,7 @@ public:
 	void setVelocity(const sf::Vector2f& newVelocity);
 	void setVelocity(float newX, float newY);
 
-	[[nodiscard]] sf::Vector2f getVelocity() const;
+	sf::Vector2f getVelocity() const;
 
 	void accelerate(const sf::Vector2f& force);
 	void accelerate(const float forceX, const float forceY);

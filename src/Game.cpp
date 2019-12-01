@@ -13,7 +13,6 @@ Game::Game() {
     textureManager.load(Resources::Textures::Pillar, "assets/graphics/pillar.png");
     rootNode = std::make_unique<SceneNode>();
     auto e1 = std::make_unique<Entity>(sf::Vector2f{400, 400}, Entity::Type::Player, textureManager);
-    std::cout <<e1->getPosition().x << std::endl;
     rootNode->addChild(std::move(e1));
 }
 
