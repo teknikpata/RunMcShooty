@@ -14,6 +14,9 @@ public:
     std::unique_ptr<SceneNode> removeChild(const SceneNode& node);
 
     void update(const float& deltaTime);
+
+    sf::Transform getWorldTransform() const;
+    sf::Vector2f getWorldPosition() const;
 protected:
     virtual void updateThis(const float& deltaTime);
     virtual void drawThis(sf::RenderTarget& target, sf::RenderStates states) const;

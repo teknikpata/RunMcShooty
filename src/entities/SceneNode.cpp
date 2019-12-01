@@ -43,3 +43,16 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for(const auto& child : children)
         child->draw(target, states);
 }
+
+sf::Transform SceneNode::getWorldTransform() const {
+    auto transform = sf::Transform::Identity;
+    auto node = this;
+    while(node != nullptr){
+        transform *= node->getTransform();
+        node = node->parent;
+     }
+}
+
+sf::Vector2f SceneNode::getWorldPosition() const {
+    return getWorldTransform() * sf::Vector2f{};
+}

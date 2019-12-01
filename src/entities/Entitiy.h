@@ -19,10 +19,10 @@ private:
 
 public:
 	Entity(const sf::Vector2f& position,
-	       const Type type,
+	       Type type,
 	       ResourceManager<sf::Texture, Resources::Textures>& texutreManager);
 
-	virtual ~Entity();
+	~Entity() override;
 
 	void setVelocity(const sf::Vector2f& newVelocity);
 	void setVelocity(float newX, float newY);
@@ -30,7 +30,7 @@ public:
 	sf::Vector2f getVelocity() const;
 
 	void accelerate(const sf::Vector2f& force);
-	void accelerate(const float forceX, const float forceY);
+	void accelerate(float forceX, float forceY);
 
 	void updateThis(const float& deltaTime) override;
 protected:
