@@ -5,12 +5,19 @@
 #include "managers/ResourceManager.h"
 #include "entities/SceneNode.h"
 
+enum WorldLayers{
+    Background,
+    Foreground,
+    LayerCount
+};
 
 class Game {
     ResourceManager<sf::Texture, Resources::Textures> textureManager;
     std::unique_ptr<sf::RenderWindow> window;
     std::unique_ptr<SceneNode> rootNode;
+    std::array<SceneNode*, WorldLayers::LayerCount> layers;
     Entity* player;
+
 public:
     Game();
     ~Game();
@@ -22,5 +29,6 @@ private:
     void handleInput();
     void render();
     void update(float deltaTime);
+    void handleCollisions();
     sf::Vector2f input;
 };

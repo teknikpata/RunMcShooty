@@ -2,7 +2,9 @@ set(ENTITIES_FILES
         Entitiy.h
         Entitiy.cpp
         SceneNode.h
-        SceneNode.cpp)
+        SceneNode.cpp
+        SpriteNode.h
+        SpriteNode.cpp)
 
 add_library(entities ${ENTITIES_FILES})
 find_package(SFML 2.5.1 COMPONENTS graphics REQUIRED)

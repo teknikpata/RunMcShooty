@@ -1,21 +1,32 @@
 #include "Game.h"
 
 #include <SFML/Window/Event.hpp>
-#include <iostream>
 #include "entities/Entitiy.h"
+#include "entities/SpriteNode.h"
 
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
 
 Game::Game() {
     window =  std::make_unique<sf::RenderWindow>(sf::VideoMode(1024, 800), "RunMcShooty");
-
     textureManager.load(Resources::Textures::Player, "assets/graphics/player.png");
     textureManager.load(Resources::Textures::Platform, "assets/graphics/platform.png");
     textureManager.load(Resources::Textures::Pillar, "assets/graphics/pillar.png");
     rootNode = std::make_unique<SceneNode>();
+    for(int i = 0; i < LayerCount; ++i) {
+        auto layerNode = std::make_unique<SceneNode>();
+        layers[i] = layerNode.get();
+        rootNode->addChild(std::move(layerNode));
+    }
+
     auto e1 = std::make_unique<Entity>(sf::Vector2f{static_cast<float>(window->getSize().x) / 2, static_cast<float>(window->getSize().y) / 2}, Entity::Type::Player, textureManager);
     player = e1.get();
-    rootNode->addChild(std::move(e1));
+    layers[WorldLayers::Foreground]->addChild(std::move(e1));
+
+    sf::Texture& texture = textureManager.get(Resources::Textures::Pillar);
+    sf::IntRect textureRect(200, 200, 1200, 1200);
+    texture.setRepeated(true);
+    auto background = std::make_unique<SpriteNode>(texture, textureRect);
+    layers[WorldLayers::Background]->addChild(std::move(background));
 }
 Game::~Game() = default;
 
@@ -67,4 +78,8 @@ void Game::render() {
 void Game::update(const float deltaTime) {
     player->accelerate(input);
     rootNode->update(deltaTime);
+}
+
+void Game::handleCollisions() {
+    for(auto& entity : )
 }

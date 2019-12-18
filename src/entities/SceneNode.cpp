@@ -11,7 +11,6 @@ SceneNode::~SceneNode() = default;
 
 void SceneNode::addChild(std::unique_ptr<SceneNode> node) {
     children.size();
-    std::cout << node->getPosition().x << std::endl;
     node->parent = this;
     children.push_back(std::move(node));
 }
@@ -55,4 +54,13 @@ sf::Transform SceneNode::getWorldTransform() const {
 
 sf::Vector2f SceneNode::getWorldPosition() const {
     return getWorldTransform() * sf::Vector2f{};
+}
+
+
+void SceneNode::checkCollision(SceneNode &node, std::set<std::pair<SceneNode *, SceneNode *>> &collisions) {
+
+}
+
+sf::FloatRect SceneNode::getBoundingRect() const {
+    return sf::FloatRect();
 }

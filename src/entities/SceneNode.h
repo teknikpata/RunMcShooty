@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <set>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -12,11 +13,12 @@ public:
 
     void addChild(std::unique_ptr<SceneNode> node);
     std::unique_ptr<SceneNode> removeChild(const SceneNode& node);
-
     void update(const float& deltaTime);
-
     sf::Transform getWorldTransform() const;
     sf::Vector2f getWorldPosition() const;
+    virtual sf::FloatRect getBoundingRect() const;
+
+    void checkCollision(SceneNode& node, std::set<std::pair<SceneNode*, SceneNode*>>& collisions);
 protected:
     virtual void updateThis(const float& deltaTime);
     virtual void drawThis(sf::RenderTarget& target, sf::RenderStates states) const;

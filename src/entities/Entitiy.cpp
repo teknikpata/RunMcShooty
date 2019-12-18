@@ -51,3 +51,7 @@ void Entity::drawThis(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
 }
 
+sf::FloatRect Entity::getBoundingRect() const {
+     return getWorldTransform().transformRect(sprite.getGlobalBounds());
+}
+
