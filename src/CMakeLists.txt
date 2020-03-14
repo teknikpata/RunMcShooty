@@ -4,6 +4,10 @@ add_subdirectory(managers)
 
 add_executable(rms main.cpp game.cpp)
 
+IF(WIN32)
+    file(COPY ${SFML_DIR}..\\..\\..\\..\\bin/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+ENDIF(WIN32)
+
 file(COPY
         ${CMAKE_SOURCE_DIR}/assets/
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/assets/)

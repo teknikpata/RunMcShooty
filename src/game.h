@@ -3,6 +3,7 @@
 #include "entities/entity.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "entities/movable_entity.h"
+#include "utils/camera.h"
 
 class Game {
 public:
@@ -37,7 +38,8 @@ private:
     Collisions getCollisions();
 
     void resolve(const Collisions& collisions);
+    Camera camera;
     sf::RenderWindow* window;
-    std::vector<Entity*> entities;
-    std::vector<MovableEntity*> movables;
+    std::vector<std::shared_ptr<Entity>> entities;
+    std::vector<std::shared_ptr<MovableEntity>> movables;
 };

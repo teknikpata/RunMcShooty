@@ -16,12 +16,15 @@ void MovableEntity::update(const float& deltaTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
         acceleration += sf::Vector2f(1, 0);
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+        addForce({0.f, -450.f});
+    }
     acceleration *= speed;
     acceleration += -velocity * friction;
-    position += (acceleration * 0.5f * (deltaTime * deltaTime)) + (velocity * deltaTime);
+    position += (acceleration * 0.85f * (deltaTime * deltaTime)) + (velocity * deltaTime);
     velocity += acceleration * deltaTime;
     //TODO: Dont let entities handle gravity.
-    addForce(sf::Vector2f(0, 50.f));
+    addForce(sf::Vector2f(0, 100.f));
     sprite.update(deltaTime);
     setPosition(position);
 }

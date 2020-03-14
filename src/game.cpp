@@ -4,52 +4,55 @@
 #include "entities/movable_entity.h"
 #include "entities/static_entity.h"
 #include "managers/texture_manager.h"
+#include "utils/camera.h"
 
-Game::Game() {
-    window = new sf::RenderWindow(sf::VideoMode(1024, 800), "RunMcShooty");
+
+const auto TimePerFrame = sf::seconds(1.0f / 60.f);
+constexpr int HEIGHT = 800;
+constexpr int WIDTH = 1024;
+
+Game::Game() :
+        camera{sf::Vector2f{}, sf::Vector2i{WIDTH, HEIGHT}} {
+    window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
     TextureManager textureManager;
 
     textureManager.load("player", "assets/graphics/player.png");
     textureManager.load("platform", "assets/graphics/platform.png");
     textureManager.load("pillar", "assets/graphics/pillar.png");
 
-    Sprite playerSprite{textureManager.get("player"), 2, 2, .5f};
+    Sprite playerSprite{textureManager.get("player"), 2, 2, 1.f};
     Sprite platformSprite{textureManager.get("platform")};
     Sprite pillarSprite{textureManager.get("pillar")};
 
-    movables.push_back(new MovableEntity(sf::Vector2f(200, 225), true, playerSprite));
+    movables.push_back(std::make_shared<MovableEntity>(sf::Vector2f(200, 225), true, playerSprite));
     entities.push_back(movables.front());
-
-    entities.push_back(new StaticEntity(sf::Vector2f(200, 265), true, platformSprite));
-    entities.push_back(new StaticEntity(sf::Vector2f(400, 400), true, platformSprite));
-    entities.push_back(new StaticEntity(sf::Vector2f(200, 400), true, platformSprite));
-    entities.push_back(new StaticEntity(sf::Vector2f(0, 400),  true, platformSprite));
-    entities.push_back(new StaticEntity(sf::Vector2f(400, 275),  false, pillarSprite));
+    camera.follow(movables.front());
+    entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{200, 265}, true, platformSprite));
+    entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{401, 400}, true, platformSprite));
+    entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{0, 400}, true, platformSprite));
+    entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{0, 400}, true, platformSprite));
+    entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{400, 275}, false, pillarSprite));
 }
 
 Game::~Game() {
-    while (!entities.empty()) {
-        delete entities.back();
-        entities.pop_back();
-    }
+    movables.clear();
+    entities.clear();
     delete window;
 }
 
 void Game::run() {
     sf::Clock clock;
-    float stepTime = 1.0f / 120.0f;
-    float sum = 0.f;
+    auto lastUpdate = sf::Time::Zero;
     while (window->isOpen()) {
-        float deltaTime = clock.restart().asSeconds();
-        sum += deltaTime;
-        sf::Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window->close();
-        }
-        if (sum >= stepTime) {
-            update(stepTime);
-            sum = 0;
+        lastUpdate += clock.restart();
+        while (lastUpdate > TimePerFrame) {
+            lastUpdate -= TimePerFrame;
+            sf::Event event;
+            while (window->pollEvent(event)) {
+                if (event.type == sf::Event::Closed)
+                    window->close();
+            }
+            update(TimePerFrame.asSeconds());
         }
         render();
     }
@@ -146,16 +149,25 @@ Game::Collisions Game::getCollisions() {
                         }
                     }
                 }
-
-                collisions.emplace_back(e1, e2, sf::Vector2f{correctionX, correctionY}, distanceX, distanceY, side);
+                // TODO: Dont take raw pointer.
+                collisions.emplace_back(e1.get(), e2.get(), sf::Vector2f{correctionX, correctionY}, distanceX,
+                        distanceY,
+                        side);
             }
         }
     }
     return collisions;
 }
 
-void Game::resolve(const Game::Collisions &collisions) {
-    for (const auto &collision : collisions) {
+void Game::resolve(const Game::Collisions& collisions) {
+    for (const auto& collision : collisions) {
+        auto e1Bounds = collision.e1->getBounds();
+        auto e2Bounds = collision.e2->getBounds();
+
+        //Check if collision is already solved
+        if (!e1Bounds.intersects(e2Bounds))
+            continue;
+
         auto movEntity = collision.e1;
         movEntity->move(collision.depth);
         if (collision.side == CollisionBox::Side::RIGHT || collision.side == CollisionBox::Side::LEFT) {
@@ -169,16 +181,19 @@ void Game::resolve(const Game::Collisions &collisions) {
     }
 }
 
-void Game::update(const float &deltaTime) {
-    for (auto &e : entities)
+void Game::update(const float& deltaTime) {
+    for (auto& e : entities)
         e->update(deltaTime);
     resolve(getCollisions());
+    const auto& player = movables.front();
+
+    window->setView(camera());
     render();
 }
 
 void Game::render() {
     window->clear();
-    for (auto &e : entities)
+    for (auto& e : entities)
         e->render(window);
     window->display();
 }

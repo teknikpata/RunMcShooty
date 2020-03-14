@@ -20,7 +20,7 @@ public:
 protected:
     bool grounded;
 	sf::Vector2f velocity;
-	float speed = 1600.f;
-	float friction = 6.f;
-	float maxSpeed = 500.f;
+	float speed = 2200.f;
+	float friction = 9.5f;
+	//float maxSpeed = 2000.f;
 };
