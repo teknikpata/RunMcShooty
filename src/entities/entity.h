@@ -17,6 +17,7 @@ public:
 	virtual void render(sf::RenderTarget* renderTarget) = 0;
 
 	sf::Vector2f getPosition() const;
+	sf::Vector2f getCenter() const;
 	void setPosition(const sf::Vector2f& newPosition);
 	bool isCollidable() const;
 	void setCollidable(const bool newCollidable);

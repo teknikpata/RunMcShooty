@@ -1,4 +1,5 @@
 #include "texture_manager.h"
+#include <memory>
 
 TextureManager::TextureManager() = default;
 

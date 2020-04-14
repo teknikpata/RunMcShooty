@@ -26,7 +26,7 @@ Game::Game() :
 
     movables.push_back(std::make_shared<MovableEntity>(sf::Vector2f(200, 225), true, playerSprite));
     entities.push_back(movables.front());
-    camera.follow(movables.front());
+    camera.follow(movables.front(),{800, 1024} );
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{200, 265}, true, platformSprite));
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{401, 400}, true, platformSprite));
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{0, 400}, true, platformSprite));
