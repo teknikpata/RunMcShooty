@@ -1,71 +1,75 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
 #include "entities/entity.h"
 
+namespace {
+sf::RectangleShape createRectangle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color color) {
+    sf::RectangleShape rectangle;
+    rectangle.setSize(size);
+    rectangle.setFillColor(color);
+    rectangle.setOutlineColor(color);
+    rectangle.setOutlineThickness(5.f);
+    rectangle.setPosition(position);
+    return rectangle;
+};
+}
 class Camera {
 public:
-    Camera(const sf::Vector2f position, sf::Vector2i bounds) :
-            bounds{bounds} {
-        view.reset(sf::FloatRect(position.x, position.y, bounds.x, bounds.y));
-    }
+    Camera() = default;
 
     ~Camera() = default;
 
-    sf::View operator()() {
+    sf::View operator()(const sf::View& currentView) {
+        auto newView = currentView;
         if (target) {
             const auto& targetCenter = target->getCenter();
-            const auto& viewCenter = view.getCenter();
+            const auto& viewCenter = newView.getCenter();
 
-            auto vector = targetCenter - viewCenter;
+            const auto& displacement = targetCenter - viewCenter;
             float deltaX = 0.f;
             float deltaY = 0.f;
 
-            if(fabs(vector.x) > trackingArea.x / 2){
-                if(vector.x > 0.f){
+            if (fabs(displacement.x) > trackingArea.x / 2) {
+                if (displacement.x > 0.f)
                     deltaX = targetCenter.x - (viewCenter.x + (trackingArea.x / 2));
-                }
-                else {
+                else
                     deltaX = targetCenter.x - (viewCenter.x - (trackingArea.x / 2));
-                }
             }
-            if(fabs(vector.y) > trackingArea.y / 2){
-                if(vector.y > 0.f){
+
+            if (fabs(displacement.y) > trackingArea.y / 2) {
+                if (displacement.y > 0.f)
                     deltaY = targetCenter.y - (viewCenter.y + (trackingArea.y / 2));
-                }
-                else {
+                else
                     deltaY = targetCenter.y - (viewCenter.y - (trackingArea.y / 2));
-                }
             }
-            view.move(deltaX, deltaY);
+            newView.move(sf::Vector2f{deltaX, deltaY});
         }
-        return view;
+        return newView;
     }
 
-    void move(const sf::Vector2f &offset) {
-        view.move(offset);
+    void move(const sf::Vector2f& offset) {
+        // view.move(offset);
     }
 
     void rotate(float angle) {
-        view.rotate(angle);
+        // view.rotate(angle);
     }
 
-    void lookAt(const sf::Vector2f &point) {
-        view.setCenter(point);
+    void lookAt(const sf::Vector2f& point) {
+        // view.setCenter(point);
     }
 
-    void follow(std::shared_ptr<Entity> target, const sf::Vector2f &searchArea) {
+    void follow(std::shared_ptr<Entity> target, const sf::Vector2f& searchArea) {
         this->trackingArea = searchArea;
         this->target = target;
+        // view.setCenter(target->getCenter());
     }
 
 private:
-    sf::View view;
-    sf::Vector2i bounds;
     std::shared_ptr<Entity> target;
-    // Need a new name
     sf::Vector2f trackingArea;
 };

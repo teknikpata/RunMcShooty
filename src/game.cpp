@@ -9,10 +9,10 @@
 
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
 constexpr int HEIGHT = 800;
-constexpr int WIDTH = 1024;
+constexpr int WIDTH = 1200;
 
 Game::Game() :
-        camera{sf::Vector2f{}, sf::Vector2i{WIDTH, HEIGHT}} {
+        camera{} {
     window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
     TextureManager textureManager;
 
@@ -26,7 +26,7 @@ Game::Game() :
 
     movables.push_back(std::make_shared<MovableEntity>(sf::Vector2f(200, 225), true, playerSprite));
     entities.push_back(movables.front());
-    camera.follow(movables.front(),{800, 1024} );
+    camera.follow(movables.front(),{300, 200} );
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{200, 265}, true, platformSprite));
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{401, 400}, true, platformSprite));
     entities.push_back(std::make_shared<StaticEntity>(sf::Vector2f{0, 400}, true, platformSprite));
@@ -187,7 +187,7 @@ void Game::update(const float& deltaTime) {
     resolve(getCollisions());
     const auto& player = movables.front();
 
-    window->setView(camera());
+    window->setView(camera(window->getView()));
     render();
 }
 

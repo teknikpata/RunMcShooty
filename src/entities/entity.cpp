@@ -43,5 +43,5 @@ sf::Vector2f Entity::getSize() const {
 }
 
 sf::Vector2f Entity::getCenter() const {
-    return {position.x - (box.getSize().x / 2), position.y - (box.getSize().y / 2)};
+    return {position.x + (box.getSize().x / 2), position.y +(box.getSize().y / 2)};
 }
