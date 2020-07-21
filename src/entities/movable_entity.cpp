@@ -3,7 +3,7 @@
 #include "utils/math.h"
 
 MovableEntity::MovableEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
-    Entity(position, collidable, sprite) {
+        Entity(position, collidable, sprite) {
 }
 
 MovableEntity::~MovableEntity() = default;
@@ -16,15 +16,16 @@ void MovableEntity::update(const float& deltaTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
         acceleration += sf::Vector2f(1, 0);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-        addForce({0.f, -450.f});
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        acceleration += sf::Vector2f(0, 1);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        acceleration += sf::Vector2f(0, -1);
     }
     acceleration *= speed;
     acceleration += -velocity * friction;
     position += (acceleration * 0.85f * (deltaTime * deltaTime)) + (velocity * deltaTime);
     velocity += acceleration * deltaTime;
-    //TODO: Dont let entities handle gravity.
-    addForce(sf::Vector2f(0, 100.f));
     sprite.update(deltaTime);
     setPosition(position);
 }
