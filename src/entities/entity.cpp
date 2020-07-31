@@ -1,11 +1,13 @@
 #include "entity.h"
 
-Entity::Entity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
-    position(position),
-    collidable(collidable),
-    sprite(sprite),
-    box(position, sprite.getSize()){
-   this->sprite.setPosition(position);
+Entity::Entity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite, RestrictedQueue<Event*>
+eventQueue) :
+        position(position),
+        collidable(collidable),
+        sprite(sprite),
+        eventQueue{eventQueue},
+        box(position, sprite.getSize()) {
+    this->sprite.setPosition(position);
 }
 
 Entity::~Entity() = default;
@@ -43,5 +45,5 @@ sf::Vector2f Entity::getSize() const {
 }
 
 sf::Vector2f Entity::getCenter() const {
-    return {position.x + (box.getSize().x / 2), position.y +(box.getSize().y / 2)};
+    return {position.x + (box.getSize().x / 2), position.y + (box.getSize().y / 2)};
 }

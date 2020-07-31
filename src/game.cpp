@@ -6,14 +6,13 @@
 #include "managers/texture_manager.h"
 
 
-
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
 constexpr int HEIGHT = 800;
 constexpr int WIDTH = 1200;
 
 Game::Game() :
         camera{},
-        world{"1"}{
+        world{"1"} {
     window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
     TextureManager textureManager;
 
@@ -26,14 +25,14 @@ Game::Game() :
     Sprite pillarSprite{textureManager.get("pillar")};
 
 
-    world.addPlayer(MovableEntity{sf::Vector2f(200, 225), true, playerSprite});
-    camera.follow(world.getPlayer(),{300, 200});
+    world.addPlayer(MovableEntity{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue{eventQueue}});
+    camera.follow(world.getPlayer(), {300, 200});
 
-    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite});
-    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite});
-    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite});
+    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue{eventQueue}});
 }
 
 Game::~Game() {
@@ -52,13 +51,19 @@ void Game::run() {
                 if (event.type == sf::Event::Closed)
                     window->close();
             }
+
+            while (!eventQueue.empty()) {
+                auto* myEvent = eventQueue.front();
+                world.handleEvent(myEvent);
+                eventQueue.pop();
+            }
             update(TimePerFrame.asSeconds());
         }
         render();
     }
 }
 
-void Game::resolve(const World::Collisions& collisions) {
+void Game::resolve(const Collisions& collisions) {
     for (const auto& collision : collisions) {
         auto e1Bounds = collision.e1->getBounds();
         auto e2Bounds = collision.e2->getBounds();
@@ -70,27 +75,27 @@ void Game::resolve(const World::Collisions& collisions) {
         auto movEntity = collision.e1;
         movEntity->move(collision.depth);
         switch (collision.side) {
-            case CollisionBox::Side::TOP:
+            case CollisionData::Side::TOP:
                 movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
                 break;
-            case CollisionBox::Side::BOTTOM:
+            case CollisionData::Side::BOTTOM:
                 movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
                 movEntity->notifyGrounded();
                 break;
-            case CollisionBox::Side::LEFT:
+            case CollisionData::Side::LEFT:
                 movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
                 break;
-            case CollisionBox::Side::RIGHT:
+            case CollisionData::Side::RIGHT:
                 movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
                 break;
-            case CollisionBox::Side::NONE:
+            case CollisionData::Side::NONE:
                 break;
         }
     }
 }
 
 void Game::update(const float& deltaTime) {
-   world.update(deltaTime);
+    world.update(deltaTime);
     resolve(world.getCollisions());
     window->setView(camera(window->getView()));
     render();

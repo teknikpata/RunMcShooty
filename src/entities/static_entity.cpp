@@ -1,7 +1,8 @@
 #include "static_entity.h"
 
-StaticEntity::StaticEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
-    Entity{position, collidable, sprite} {}
+StaticEntity::StaticEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite,
+                           RestrictedQueue<Event*> eventQueue) :
+        Entity{position, collidable, sprite, eventQueue} {}
 
 StaticEntity::~StaticEntity() = default;
 

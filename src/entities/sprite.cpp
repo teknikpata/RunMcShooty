@@ -4,7 +4,7 @@ Sprite::Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, 
                const float& timePerCell) :
         texture(texture),
         timePerCell(timePerCell),
-        animated(true){
+        animated(true) {
     elapsedTime = 0;
     spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
@@ -16,7 +16,7 @@ Sprite::Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, 
 
 Sprite::Sprite(std::shared_ptr<sf::Texture> texture) :
         texture(texture),
-        animated(false){
+        animated(false) {
     elapsedTime = 0;
     spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
@@ -25,7 +25,7 @@ Sprite::Sprite(std::shared_ptr<sf::Texture> texture) :
     sprite.setTextureRect({currentPosition.x, currentPosition.y, cellSize.x, cellSize.y});
 }
 
-Sprite::~Sprite()  = default;
+Sprite::~Sprite() = default;
 
 void Sprite::update(const float& deltaTime) {
     if (!animated)

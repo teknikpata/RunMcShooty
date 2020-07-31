@@ -7,15 +7,15 @@
 #include "entities/entity.h"
 
 namespace {
-sf::RectangleShape createRectangle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color color) {
-    sf::RectangleShape rectangle;
-    rectangle.setSize(size);
-    rectangle.setFillColor(color);
-    rectangle.setOutlineColor(color);
-    rectangle.setOutlineThickness(5.f);
-    rectangle.setPosition(position);
-    return rectangle;
-};
+    sf::RectangleShape createRectangle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color color) {
+        sf::RectangleShape rectangle;
+        rectangle.setSize(size);
+        rectangle.setFillColor(color);
+        rectangle.setOutlineColor(color);
+        rectangle.setOutlineThickness(5.f);
+        rectangle.setPosition(position);
+        return rectangle;
+    };
 }
 class Camera {
 public:

@@ -1,6 +1,7 @@
 set(UTILS_FILES
         collision_box.h
         collision_box.cpp
+        collision_data.h
         file.h
         math.h
         camera.h)

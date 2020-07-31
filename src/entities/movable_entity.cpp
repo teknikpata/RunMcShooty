@@ -2,8 +2,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "utils/math.h"
 
-MovableEntity::MovableEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite) :
-        Entity(position, collidable, sprite) {
+MovableEntity::MovableEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite,
+                             RestrictedQueue<Event*> eventQueue) :
+        Entity(position, collidable, sprite, eventQueue) {
 }
 
 MovableEntity::~MovableEntity() = default;
@@ -21,6 +22,10 @@ void MovableEntity::update(const float& deltaTime) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
         acceleration += sf::Vector2f(0, -1);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+        eventQueue.push(new MoveEvent{});
     }
     acceleration *= speed;
     acceleration += -velocity * friction;

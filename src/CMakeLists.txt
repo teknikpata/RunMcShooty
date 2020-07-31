@@ -2,11 +2,11 @@ add_subdirectory(utils)
 add_subdirectory(entities)
 add_subdirectory(managers)
 
-add_executable(rms main.cpp game.cpp)
+add_executable(rms main.cpp game.cpp world.cpp)
 
-IF(WIN32)
+IF (WIN32)
     file(COPY ${SFML_DIR}..\\..\\..\\..\\bin/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
-ENDIF(WIN32)
+ENDIF (WIN32)
 
 file(COPY
         ${CMAKE_SOURCE_DIR}/assets/

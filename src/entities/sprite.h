@@ -1,11 +1,13 @@
 #pragma once
+
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-class Sprite{
+class Sprite {
 public:
-    Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY, const float& timePerCell);
+    Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY,
+           const float& timePerCell);
     Sprite(std::shared_ptr<sf::Texture> texture);
     ~Sprite();
     void update(const float& deltaTime);

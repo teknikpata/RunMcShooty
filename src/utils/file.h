@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <utility>
 
@@ -14,21 +15,20 @@ for (auto & p : std::experimental::filesystem::directory_iterator(path)) {
 }
 */
 
-class File 
-{
+class File {
 public:
-	explicit File(std::string path) : path(std::move(path)){}
-	File() = delete;
+    explicit File(std::string path) : path(std::move(path)) {}
+    File() = delete;
 
-	~File() = default;
+    ~File() = default;
 
-	void read() = delete;
-	void write() = delete;
-	std::string getPath() const { return path; };
-	void setPath(std::string& path){
-		this->path = path;
-	}
+    void read() = delete;
+    void write() = delete;
+    std::string getPath() const { return path; };
+    void setPath(std::string& path) {
+        this->path = path;
+    }
 private:
 
-	std::string path;
+    std::string path;
 };
