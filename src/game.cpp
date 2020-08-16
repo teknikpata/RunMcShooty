@@ -49,8 +49,18 @@ void Game::run() {
                 switch (myEvent->type) {
                     case Event::Type::Attack:
                         auto attackEvent = static_cast<AttackEvent*>(myEvent);
+
+                        auto direction = window->mapPixelToCoords(sf::Mouse::getPosition(*window)) - attackEvent->position;
+                        float pX = powf(direction.x, 2);
+                        float pY = powf(direction.y, 2);
+                        auto length = sqrtf(pX + pY);
+                        auto normalizedDirection = sf::Vector2f{0,0};
+                        if (length != 0) {
+                            normalizedDirection = sf::Vector2f{direction.x / length, direction.y / length};
+                        }
+                        std::cout << "Position: " << attackEvent->position.x << " : " << attackEvent->position.y << " MousePos: " << sf::Mouse::getPosition(*window).x << " : " << sf::Mouse::getPosition(*window).y <<  " Dir: " << normalizedDirection.x << " : " << normalizedDirection.y << std::endl;
                         world.addEntity(
-                                MovableEntity{attackEvent->position, attackEvent->direction, false, textureManager.get(
+                                MovableEntity{attackEvent->position, normalizedDirection, false, textureManager.get(
                                         "platform"), RestrictedQueue<Event *>{eventQueue}});
                         break;
                 }

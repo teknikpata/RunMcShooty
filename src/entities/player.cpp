@@ -29,17 +29,8 @@ void Player::update(const float &deltaTime) {
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && bullets > 0 && weaponCooldownTimer <= 0) {
-        auto direction = sf::Mouse::getPosition() - static_cast<sf::Vector2i>(position);
-        float pX = powf(position.x, 2);
-        float pY = powf(position.y, 2);
-        auto length = sqrtf(pX + pY);
-        auto normalizedDirection = sf::Vector2f{0,0};
-        if (length != 0) {
-            normalizedDirection = sf::Vector2f{direction.x / length, direction.y / length};
-        }
 
-
-        eventQueue.push(new AttackEvent{position, normalizedDirection});
+        eventQueue.push(new AttackEvent{getCenter(), {}});
         bullets--;
         weaponCooldownTimer = WEAPON_COOLDOWN_TIMER;
     }
