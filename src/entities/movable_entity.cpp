@@ -1,50 +1,31 @@
 #include "movable_entity.h"
-#include <SFML/Window/Keyboard.hpp>
-#include "utils/math.h"
+#include <iostream>
 
-MovableEntity::MovableEntity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite,
-                             RestrictedQueue<Event*> eventQueue) :
-        Entity(position, collidable, sprite, eventQueue) {
+MovableEntity::MovableEntity(const sf::Vector2f &position, const sf::Vector2f &velocity, const bool collidable,
+                             const Sprite &sprite,
+                             RestrictedQueue<Event *> eventQueue) :
+        velocity{velocity}
+        , Entity(position, collidable, sprite, eventQueue) {
 }
 
 MovableEntity::~MovableEntity() = default;
 
-void MovableEntity::update(const float& deltaTime) {
-    sf::Vector2f acceleration;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        acceleration += sf::Vector2f(-1, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        acceleration += sf::Vector2f(1, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        acceleration += sf::Vector2f(0, 1);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        acceleration += sf::Vector2f(0, -1);
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-        eventQueue.push(new MoveEvent{});
-    }
-    acceleration *= speed;
-    acceleration += -velocity * friction;
-    position += (acceleration * 0.85f * (deltaTime * deltaTime)) + (velocity * deltaTime);
-    velocity += acceleration * deltaTime;
+void MovableEntity::update(const float &deltaTime) {
+    position += (speed * velocity) * deltaTime;
     sprite.update(deltaTime);
     setPosition(position);
 }
 
-void MovableEntity::render(sf::RenderTarget* renderTarget) {
+void MovableEntity::render(sf::RenderTarget *renderTarget) {
     sprite.render(renderTarget);
 }
 
-void MovableEntity::multiplyVelocity(const sf::Vector2f& vector) {
+void MovableEntity::multiplyVelocity(const sf::Vector2f &vector) {
     velocity.x *= vector.x;
     velocity.y *= vector.y;
 }
 
-void MovableEntity::addForce(const sf::Vector2f& force) {
+void MovableEntity::addForce(const sf::Vector2f &force) {
     velocity += force;
 }
 

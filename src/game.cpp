@@ -1,20 +1,13 @@
 #include "game.h"
 
-#include <SFML/Window/Event.hpp>
-#include "entities/movable_entity.h"
-#include "entities/static_entity.h"
-#include "managers/texture_manager.h"
-
-
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
 constexpr int HEIGHT = 800;
 constexpr int WIDTH = 1200;
 
 Game::Game() :
-        camera{},
-        world{"1"} {
+        camera{}
+        , world{"1"} {
     window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
-    TextureManager textureManager;
 
     textureManager.load("player", "assets/graphics/player.png");
     textureManager.load("platform", "assets/graphics/platform.png");
@@ -24,15 +17,14 @@ Game::Game() :
     Sprite platformSprite{textureManager.get("platform")};
     Sprite pillarSprite{textureManager.get("pillar")};
 
-
-    world.addPlayer(MovableEntity{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue{eventQueue}});
+    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue<Event *>{eventQueue}});
     camera.follow(world.getPlayer(), {300, 200});
 
-    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event *>{eventQueue}});
 }
 
 Game::~Game() {
@@ -53,8 +45,16 @@ void Game::run() {
             }
 
             while (!eventQueue.empty()) {
-                auto* myEvent = eventQueue.front();
-                world.handleEvent(myEvent);
+                auto *myEvent = eventQueue.front();
+                switch (myEvent->type) {
+                    case Event::Type::Attack:
+                        auto attackEvent = static_cast<AttackEvent*>(myEvent);
+                        world.addEntity(
+                                MovableEntity{attackEvent->position, attackEvent->direction, false, textureManager.get(
+                                        "platform"), RestrictedQueue<Event *>{eventQueue}});
+                        break;
+                }
+
                 eventQueue.pop();
             }
             update(TimePerFrame.asSeconds());
@@ -63,8 +63,8 @@ void Game::run() {
     }
 }
 
-void Game::resolve(const Collisions& collisions) {
-    for (const auto& collision : collisions) {
+void Game::resolve(const Collisions &collisions) {
+    for (const auto &collision : collisions) {
         auto e1Bounds = collision.e1->getBounds();
         auto e2Bounds = collision.e2->getBounds();
 
@@ -94,7 +94,7 @@ void Game::resolve(const Collisions& collisions) {
     }
 }
 
-void Game::update(const float& deltaTime) {
+void Game::update(const float &deltaTime) {
     world.update(deltaTime);
     resolve(world.getCollisions());
     window->setView(camera(window->getView()));

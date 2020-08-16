@@ -2,37 +2,37 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "collision_box.h"
 
-CollisionBox::CollisionBox(const sf::Vector2f& position, const sf::Vector2f& size, const Constraints constraints) :
-        position{position},
-        size{size},
-        constraints{constraints} {
+CollisionBox::CollisionBox(const sf::Vector2f &position, const sf::Vector2f &size, const Constraints constraints) :
+        position{position}
+        , size{size}
+        , constraints{constraints} {
 }
 
 CollisionBox::~CollisionBox() {}
 
-bool CollisionBox::contains(sf::Vector2f& point) {
+bool CollisionBox::contains(sf::Vector2f &point) {
     return position.x < point.x &&
            position.x + size.x > point.x &&
            position.y < point.y &&
            position.y + size.y > position.y;
 }
 
-void CollisionBox::setPosition(const sf::Vector2f& newPosition) {
+void CollisionBox::setPosition(const sf::Vector2f &newPosition) {
     position = newPosition;
 }
 
-void CollisionBox::move(const sf::Vector2f& offset) {
+void CollisionBox::move(const sf::Vector2f &offset) {
     position += offset;
 }
 
-bool CollisionBox::intersects(CollisionBox& other) const {
+bool CollisionBox::intersects(CollisionBox &other) const {
     return position.x < other.position.x + other.size.x &&
            position.x + size.x > other.position.x &&
            position.y < other.position.y + other.size.y &&
            position.y + size.y > other.position.y;
 }
 
-void CollisionBox::render(sf::RenderTarget* target) {
+void CollisionBox::render(sf::RenderTarget *target) {
     sf::RectangleShape rect;
     rect.setPosition(position);
     rect.setSize(size);

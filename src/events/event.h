@@ -10,8 +10,11 @@ public:
         Attack
     };
 
-    Event(Type type) : type{type} {}
+    Event(Type type) :
+            type{type} {}
+
     Event() = default;
+
     ~Event() = default;
 
     virtual std::string ToString() = 0;
@@ -21,7 +24,9 @@ public:
 
 class InputEvent : public Event {
 public:
-    InputEvent() : Event(Event::Type::Input) {}
+    InputEvent() :
+            Event(Event::Type::Input) {}
+
     ~InputEvent() = default;
 
     std::string ToString() override {
@@ -31,7 +36,9 @@ public:
 
 class MoveEvent : public Event {
 public:
-    MoveEvent() : Event(Event::Type::Move) {}
+    MoveEvent() :
+            Event(Event::Type::Move) {}
+
     ~MoveEvent() = default;
 
     std::string ToString() override {
@@ -41,10 +48,17 @@ public:
 
 class AttackEvent : public Event {
 public:
-    AttackEvent() : Event(Event::Type::Attack) {}
+    AttackEvent(const sf::Vector2f &position, const sf::Vector2f &direction) :
+              position{position}
+            , direction{direction}
+            , Event(Event::Type::Attack) {}
+
     ~AttackEvent() = default;
 
     std::string ToString() override {
         return "Im a AttackEvent";
     }
+
+    sf::Vector2f position;
+    sf::Vector2f direction;
 };

@@ -17,17 +17,23 @@ for (auto & p : std::experimental::filesystem::directory_iterator(path)) {
 
 class File {
 public:
-    explicit File(std::string path) : path(std::move(path)) {}
+    explicit File(std::string path) :
+            path(std::move(path)) {}
+
     File() = delete;
 
     ~File() = default;
 
     void read() = delete;
+
     void write() = delete;
+
     std::string getPath() const { return path; };
-    void setPath(std::string& path) {
+
+    void setPath(std::string &path) {
         this->path = path;
     }
+
 private:
 
     std::string path;

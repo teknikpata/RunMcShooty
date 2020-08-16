@@ -1,10 +1,10 @@
 #include "sprite.h"
 
 Sprite::Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY,
-               const float& timePerCell) :
-        texture(texture),
-        timePerCell(timePerCell),
-        animated(true) {
+               const float &timePerCell) :
+        texture(texture)
+        , timePerCell(timePerCell)
+        , animated(true) {
     elapsedTime = 0;
     spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
@@ -15,8 +15,8 @@ Sprite::Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, 
 }
 
 Sprite::Sprite(std::shared_ptr<sf::Texture> texture) :
-        texture(texture),
-        animated(false) {
+        texture(texture)
+        , animated(false) {
     elapsedTime = 0;
     spriteSheetSize = texture->getSize();
     currentPosition = {0, 0};
@@ -27,7 +27,7 @@ Sprite::Sprite(std::shared_ptr<sf::Texture> texture) :
 
 Sprite::~Sprite() = default;
 
-void Sprite::update(const float& deltaTime) {
+void Sprite::update(const float &deltaTime) {
     if (!animated)
         return;
     elapsedTime += deltaTime;
@@ -49,18 +49,23 @@ void Sprite::update(const float& deltaTime) {
     sprite.setTextureRect({currentPosition.x, currentPosition.y, cellSize.x, cellSize.y});
 
 }
-void Sprite::render(sf::RenderTarget* renderTarget) {
+
+void Sprite::render(sf::RenderTarget *renderTarget) {
     renderTarget->draw(sprite);
 }
-void Sprite::setPosition(const sf::Vector2f& position) {
+
+void Sprite::setPosition(const sf::Vector2f &position) {
     sprite.setPosition(position);
 }
-void Sprite::move(const sf::Vector2f& offset) {
+
+void Sprite::move(const sf::Vector2f &offset) {
     sprite.move(offset);
 }
+
 sf::Vector2f Sprite::getPosition() const {
     return sprite.getPosition();
 }
+
 sf::Vector2f Sprite::getSize() const {
     return {static_cast<float>(cellSize.x), static_cast<float>(cellSize.y)};
 }

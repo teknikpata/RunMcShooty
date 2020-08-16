@@ -3,7 +3,8 @@
 #include <iostream>
 #include <utility>
 
-World::World(std::string name) : name{std::move(name)} {}
+World::World(std::string name) :
+        name{std::move(name)} {}
 
 World::~World() {
     movables.clear();
@@ -14,7 +15,7 @@ Collisions World::getCollisions() {
     Collisions collisions;
     for (auto e1 : movables) {
         for (auto e2 : entities) {
-            if (e1 == e2 || not e2->isCollidable())
+            if (e1 == e2 || not e1->isCollidable() || not e2->isCollidable())
                 continue;
             auto box1 = e1->getBounds();
             auto box2 = e2->getBounds();
@@ -111,28 +112,29 @@ Collisions World::getCollisions() {
     return collisions;
 }
 
-void World::update(const float& deltaTime) {
-    for (auto& e : entities)
+void World::update(const float &deltaTime) {
+    for (auto &e : entities)
         e->update(deltaTime);
 }
 
-void World::render(sf::RenderTarget* target) {
-    for (const auto& e : entities) {
+void World::render(sf::RenderTarget *target) {
+    for (const auto &e : entities) {
         e->render(target);
     }
 }
-void World::addEntity(const StaticEntity& entity) {
+
+void World::addEntity(const StaticEntity &entity) {
     entities.push_back(std::make_shared<StaticEntity>(entity));
 }
 
-void World::addEntity(const MovableEntity& entity) {
+void World::addEntity(const MovableEntity &entity) {
     auto shared = std::make_shared<MovableEntity>(entity);
     movables.push_back(shared);
     entities.push_back(shared);
 }
 
-void World::addPlayer(const MovableEntity& entity) {
-    player = std::make_shared<MovableEntity>(entity);
+void World::addPlayer(const Player &entity) {
+    player = std::make_shared<Player>(entity);
     movables.push_back(player);
     entities.push_back(player);
 }
@@ -140,8 +142,11 @@ void World::addPlayer(const MovableEntity& entity) {
 std::shared_ptr<Entity> World::getPlayer() {
     return player;
 }
-void World::handleEvent(Event* event) {
+
+void World::handleEvent(Event *event) {
     std::cout << "World::handleEvent " + event->ToString() << std::endl;
     std::cout << "World: " + event->ToString() << std::endl;
+
+
 }
 
