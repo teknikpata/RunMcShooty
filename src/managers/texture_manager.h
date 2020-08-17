@@ -10,9 +10,9 @@ public:
 
     ~TextureManager();
 
-    bool load(const std::string &id, const std::string &filePath);
+    bool load(const std::string& id, const std::string& filePath);
 
-    std::shared_ptr<sf::Texture> get(const std::string &id);
+    std::shared_ptr<sf::Texture> get(const std::string& id);
 
 private:
     std::map<std::string, std::shared_ptr<sf::Texture>> textures;

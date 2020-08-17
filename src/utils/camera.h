@@ -7,7 +7,7 @@
 #include "entities/entity.h"
 
 namespace {
-    sf::RectangleShape createRectangle(const sf::Vector2f &position, const sf::Vector2f &size, sf::Color color) {
+    sf::RectangleShape createRectangle(const sf::Vector2f& position, const sf::Vector2f& size, sf::Color color) {
         sf::RectangleShape rectangle;
         rectangle.setSize(size);
         rectangle.setFillColor(color);
@@ -23,13 +23,13 @@ public:
 
     ~Camera() = default;
 
-    sf::View operator()(const sf::View &currentView) {
+    sf::View operator()(const sf::View& currentView) {
         auto newView = currentView;
         if (target) {
-            const auto &targetCenter = target->getCenter();
-            const auto &viewCenter = newView.getCenter();
+            const auto& targetCenter = target->getCenter();
+            const auto& viewCenter = newView.getCenter();
 
-            const auto &displacement = targetCenter - viewCenter;
+            const auto& displacement = targetCenter - viewCenter;
             float deltaX = 0.f;
             float deltaY = 0.f;
 
@@ -51,7 +51,7 @@ public:
         return newView;
     }
 
-    void move(const sf::Vector2f &offset) {
+    void move(const sf::Vector2f& offset) {
         // view.move(offset);
     }
 
@@ -59,11 +59,11 @@ public:
         // view.rotate(angle);
     }
 
-    void lookAt(const sf::Vector2f &point) {
+    void lookAt(const sf::Vector2f& point) {
         // view.setCenter(point);
     }
 
-    void follow(std::shared_ptr<Entity> target, const sf::Vector2f &searchArea) {
+    void follow(std::shared_ptr<Entity> target, const sf::Vector2f& searchArea) {
         this->trackingArea = searchArea;
         this->target = target;
         // view.setCenter(target->getCenter());

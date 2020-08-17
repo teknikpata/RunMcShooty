@@ -11,20 +11,20 @@ public:
         NONE
     };
 
-    CollisionBox(const sf::Vector2f &position, const sf::Vector2f &size,
+    CollisionBox(const sf::Vector2f& position, const sf::Vector2f& size,
                  Constraints collisionCheck = Constraints::NONE);
 
     ~CollisionBox();
 
-    bool intersects(CollisionBox &other) const;
+    bool intersects(CollisionBox& other) const;
 
-    bool contains(sf::Vector2f &point);
+    bool contains(sf::Vector2f& point);
 
-    void render(sf::RenderTarget *target);
+    void render(sf::RenderTarget* target);
 
-    void setPosition(const sf::Vector2f &newPosition);
+    void setPosition(const sf::Vector2f& newPosition);
 
-    void move(const sf::Vector2f &offset);
+    void move(const sf::Vector2f& offset);
 
     sf::Vector2f getPosition() const;
 

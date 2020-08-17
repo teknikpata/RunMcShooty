@@ -48,8 +48,8 @@ public:
 
 class AttackEvent : public Event {
 public:
-    AttackEvent(const sf::Vector2f &position, const sf::Vector2f &direction) :
-              position{position}
+    AttackEvent(const sf::Vector2f& position, const sf::Vector2f& direction) :
+            position{position}
             , direction{direction}
             , Event(Event::Type::Attack) {}
 

@@ -1,6 +1,6 @@
 #include "entity.h"
 
-Entity::Entity(const sf::Vector2f &position, const bool collidable, const Sprite &sprite, RestrictedQueue<Event *>
+Entity::Entity(const sf::Vector2f& position, const bool collidable, const Sprite& sprite, RestrictedQueue<Event*>
 eventQueue) :
         position(position)
         , collidable(collidable)
@@ -16,7 +16,7 @@ sf::Vector2f Entity::getPosition() const {
     return position;
 }
 
-void Entity::setPosition(const sf::Vector2f &newPosition) {
+void Entity::setPosition(const sf::Vector2f& newPosition) {
     position = newPosition;
     sprite.setPosition(position);
     box.setPosition(position);
@@ -30,13 +30,13 @@ void Entity::setCollidable(const bool newCollidable) {
     collidable = newCollidable;
 }
 
-void Entity::move(const sf::Vector2f &offset) {
+void Entity::move(const sf::Vector2f& offset) {
     position += offset;
     sprite.setPosition(position);
     box.setPosition(position);
 }
 
-const CollisionBox &Entity::getBounds() const {
+const CollisionBox& Entity::getBounds() const {
     return box;
 }
 

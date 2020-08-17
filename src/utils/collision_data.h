@@ -15,14 +15,14 @@ struct CollisionData {
         NONE
     };
 
-    MovableEntity *e1;
-    Entity *e2;
+    MovableEntity* e1;
+    Entity* e2;
     sf::Vector2f depth;
     int distanceX;
     int distanceY;
     Side side;
 
-    CollisionData(MovableEntity *e1, Entity *e2, const sf::Vector2f &depth, const int distanceX, const int distanceY,
+    CollisionData(MovableEntity* e1, Entity* e2, const sf::Vector2f& depth, const int distanceX, const int distanceY,
                   Side side) :
             e1(e1)
             , e2(e2)

@@ -1,15 +1,16 @@
 #include <iostream>
-#include <math.h>
 #include "player.h"
 
-Player::Player(const sf::Vector2f &position, const bool collidable, const Sprite &sprite,
-               RestrictedQueue<Event *> eventQueue) :
+Player::Player(const sf::Vector2f& position, const bool collidable, const Sprite& sprite,
+               RestrictedQueue<Event*> eventQueue) :
+               timerRefill{1.f, "timerRefill"},
+               timerCooldown{0.2f, "timerCooldown"},
         MovableEntity(position, {}, collidable, sprite, eventQueue) {
 }
 
 Player::~Player() = default;
 
-void Player::update(const float &deltaTime) {
+void Player::update(const float& deltaTime) {
     acceleration = {};
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
         acceleration += sf::Vector2f(-1, 0);
@@ -24,21 +25,18 @@ void Player::update(const float &deltaTime) {
         acceleration += sf::Vector2f(0, -1);
     }
 
-    if (weaponCooldownTimer >= 0) {
-        weaponCooldownTimer -= deltaTime;
-    }
+    timerCooldown.update(deltaTime);
+    timerRefill.update(deltaTime);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && bullets > 0 && weaponCooldownTimer <= 0) {
-
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && bullets > 0 && timerCooldown.done()) {
         eventQueue.push(new AttackEvent{getCenter(), {}});
         bullets--;
-        weaponCooldownTimer = WEAPON_COOLDOWN_TIMER;
+        timerCooldown.reset();
     }
 
-    bulletRefillTimer -= deltaTime;
-    if (bulletRefillTimer <= 0 && bullets < MAX_BULLETS) {
+    if (timerRefill.done() && bullets < MAX_BULLETS) {
         bullets++;
-        bulletRefillTimer = BULLET_REFILL_TIME;
+        timerRefill.reset();
     }
 
     acceleration *= speed;

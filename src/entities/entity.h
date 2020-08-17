@@ -10,26 +10,26 @@
 
 class Entity {
 public:
-    Entity(const sf::Vector2f &position, bool collidable, const Sprite &sprite, RestrictedQueue<Event *> eventQueue);
+    Entity(const sf::Vector2f& position, bool collidable, const Sprite& sprite, RestrictedQueue<Event*> eventQueue);
 
     virtual ~Entity();
 
-    virtual void update(const float &deltaTime) = 0;
-    virtual void render(sf::RenderTarget *renderTarget) = 0;
+    virtual void update(const float& deltaTime) = 0;
+    virtual void render(sf::RenderTarget* renderTarget) = 0;
 
     sf::Vector2f getPosition() const;
 
     sf::Vector2f getCenter() const;
 
-    void setPosition(const sf::Vector2f &newPosition);
+    void setPosition(const sf::Vector2f& newPosition);
 
     bool isCollidable() const;
 
     void setCollidable(bool newCollidable);
 
-    void move(const sf::Vector2f &offset);
+    void move(const sf::Vector2f& offset);
 
-    const CollisionBox &getBounds() const;
+    const CollisionBox& getBounds() const;
 
     sf::Vector2f getSize() const;
 
@@ -42,5 +42,5 @@ protected:
     Sprite sprite;
     CollisionBox box;
 
-    RestrictedQueue<Event *> eventQueue;
+    RestrictedQueue<Event*> eventQueue;
 };

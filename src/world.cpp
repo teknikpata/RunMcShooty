@@ -112,28 +112,28 @@ Collisions World::getCollisions() {
     return collisions;
 }
 
-void World::update(const float &deltaTime) {
-    for (auto &e : entities)
+void World::update(const float& deltaTime) {
+    for (auto& e : entities)
         e->update(deltaTime);
 }
 
-void World::render(sf::RenderTarget *target) {
-    for (const auto &e : entities) {
+void World::render(sf::RenderTarget* target) {
+    for (const auto& e : entities) {
         e->render(target);
     }
 }
 
-void World::addEntity(const StaticEntity &entity) {
+void World::addEntity(const StaticEntity& entity) {
     entities.push_back(std::make_shared<StaticEntity>(entity));
 }
 
-void World::addEntity(const MovableEntity &entity) {
+void World::addEntity(const MovableEntity& entity) {
     auto shared = std::make_shared<MovableEntity>(entity);
     movables.push_back(shared);
     entities.push_back(shared);
 }
 
-void World::addPlayer(const Player &entity) {
+void World::addPlayer(const Player& entity) {
     player = std::make_shared<Player>(entity);
     movables.push_back(player);
     entities.push_back(player);
@@ -143,7 +143,7 @@ std::shared_ptr<Entity> World::getPlayer() {
     return player;
 }
 
-void World::handleEvent(Event *event) {
+void World::handleEvent(Event* event) {
     std::cout << "World::handleEvent " + event->ToString() << std::endl;
     std::cout << "World: " + event->ToString() << std::endl;
 

@@ -1,3 +1,4 @@
+#include "utils/math.h"
 #include "game.h"
 
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
@@ -17,14 +18,14 @@ Game::Game() :
     Sprite platformSprite{textureManager.get("platform")};
     Sprite pillarSprite{textureManager.get("pillar")};
 
-    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue<Event*>{eventQueue}});
     camera.follow(world.getPlayer(), {300, 200});
 
-    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event *>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event *>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event*>{eventQueue}});
 }
 
 Game::~Game() {
@@ -45,26 +46,28 @@ void Game::run() {
             }
 
             while (!eventQueue.empty()) {
-                auto *myEvent = eventQueue.front();
+                auto* myEvent = eventQueue.front();
                 switch (myEvent->type) {
-                    case Event::Type::Attack:
-                        auto attackEvent = static_cast<AttackEvent*>(myEvent);
-
-                        auto direction = window->mapPixelToCoords(sf::Mouse::getPosition(*window)) - attackEvent->position;
-                        float pX = powf(direction.x, 2);
-                        float pY = powf(direction.y, 2);
-                        auto length = sqrtf(pX + pY);
-                        auto normalizedDirection = sf::Vector2f{0,0};
-                        if (length != 0) {
-                            normalizedDirection = sf::Vector2f{direction.x / length, direction.y / length};
-                        }
-                        std::cout << "Position: " << attackEvent->position.x << " : " << attackEvent->position.y << " MousePos: " << sf::Mouse::getPosition(*window).x << " : " << sf::Mouse::getPosition(*window).y <<  " Dir: " << normalizedDirection.x << " : " << normalizedDirection.y << std::endl;
+                    case Event::Type::Attack: {
+                        auto attackEvent = dynamic_cast<AttackEvent*>(myEvent);
+                        auto direction =
+                                window->mapPixelToCoords(sf::Mouse::getPosition(*window)) - attackEvent->position;
+                        direction = math::normalizeVector(direction);
                         world.addEntity(
-                                MovableEntity{attackEvent->position, normalizedDirection, false, textureManager.get(
-                                        "platform"), RestrictedQueue<Event *>{eventQueue}});
+                                MovableEntity{attackEvent->position, direction, false, textureManager.get(
+                                        "platform"), RestrictedQueue<Event*>{eventQueue}});
                         break;
+                    }
+                    case Event::Type::Input: {
+                        break;
+                    }
+                    case Event::Type::Move: {
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-
                 eventQueue.pop();
             }
             update(TimePerFrame.asSeconds());
@@ -73,8 +76,8 @@ void Game::run() {
     }
 }
 
-void Game::resolve(const Collisions &collisions) {
-    for (const auto &collision : collisions) {
+void Game::resolve(const Collisions& collisions) {
+    for (const auto& collision : collisions) {
         auto e1Bounds = collision.e1->getBounds();
         auto e2Bounds = collision.e2->getBounds();
 
@@ -104,7 +107,7 @@ void Game::resolve(const Collisions &collisions) {
     }
 }
 
-void Game::update(const float &deltaTime) {
+void Game::update(const float& deltaTime) {
     world.update(deltaTime);
     resolve(world.getCollisions());
     window->setView(camera(window->getView()));

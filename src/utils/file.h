@@ -30,7 +30,7 @@ public:
 
     std::string getPath() const { return path; };
 
-    void setPath(std::string &path) {
+    void setPath(std::string& path) {
         this->path = path;
     }
 

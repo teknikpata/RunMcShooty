@@ -5,7 +5,8 @@
 template<class Object>
 class RestrictedQueue {
 public:
-    explicit RestrictedQueue(std::queue<Object> &queue) : queue{queue} {};
+    explicit RestrictedQueue(std::queue<Object>& queue) :
+            queue{queue} {};
 
     ~RestrictedQueue() = default;
 
@@ -14,10 +15,10 @@ public:
     }
 
     template<class... Args>
-    void emplace(Args &&... args) {
+    void emplace(Args&& ... args) {
         queue.emplace(args...);
     }
 
 private:
-    std::queue<Object> &queue;
+    std::queue<Object>& queue;
 };
