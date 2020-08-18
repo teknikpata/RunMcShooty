@@ -2,7 +2,7 @@ add_subdirectory(utils)
 add_subdirectory(entities)
 add_subdirectory(managers)
 
-add_executable(rms main.cpp game.cpp world.cpp)
+add_executable(rms main.cpp game.cpp world.cpp weapon.h)
 
 IF (WIN32)
     file(COPY ${SFML_DIR}..\\..\\..\\..\\bin/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)

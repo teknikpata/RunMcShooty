@@ -13,6 +13,7 @@ Game::Game() :
     textureManager.load("player", "assets/graphics/player.png");
     textureManager.load("platform", "assets/graphics/platform.png");
     textureManager.load("pillar", "assets/graphics/pillar.png");
+    textureManager.load("projectile", "assets/graphics/projectile.png");
 
     Sprite playerSprite{textureManager.get("player"), 2, 2, 1.f};
     Sprite platformSprite{textureManager.get("platform")};
@@ -55,7 +56,7 @@ void Game::run() {
                         direction = math::normalizeVector(direction);
                         world.addEntity(
                                 MovableEntity{attackEvent->position, direction, false, textureManager.get(
-                                        "platform"), RestrictedQueue<Event*>{eventQueue}});
+                                        "projectile"), RestrictedQueue<Event*>{eventQueue}});
                         break;
                     }
                     case Event::Type::Input: {

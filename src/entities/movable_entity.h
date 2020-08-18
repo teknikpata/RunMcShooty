@@ -27,7 +27,7 @@ public:
 protected:
     bool grounded;
     sf::Vector2f velocity;
-    float speed = 2200.f;
+    float speed = 800.f;
     float friction = 9.5f;
     sf::Vector2f acceleration;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
-#include <math.h>
+#include <cmath>
 
 namespace math {
     template<class T>

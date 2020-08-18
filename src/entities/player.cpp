@@ -3,8 +3,7 @@
 
 Player::Player(const sf::Vector2f& position, const bool collidable, const Sprite& sprite,
                RestrictedQueue<Event*> eventQueue) :
-               timerRefill{1.f, "timerRefill"},
-               timerCooldown{0.2f, "timerCooldown"},
+              weapon{10, 0.05f, 0.2f},
         MovableEntity(position, {}, collidable, sprite, eventQueue) {
 }
 
@@ -25,18 +24,10 @@ void Player::update(const float& deltaTime) {
         acceleration += sf::Vector2f(0, -1);
     }
 
-    timerCooldown.update(deltaTime);
-    timerRefill.update(deltaTime);
+    weapon.update(deltaTime);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && bullets > 0 && timerCooldown.done()) {
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && weapon.fire()) {
         eventQueue.push(new AttackEvent{getCenter(), {}});
-        bullets--;
-        timerCooldown.reset();
-    }
-
-    if (timerRefill.done() && bullets < MAX_BULLETS) {
-        bullets++;
-        timerRefill.reset();
     }
 
     acceleration *= speed;

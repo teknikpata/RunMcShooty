@@ -2,6 +2,7 @@
 
 #include <utils/timer.h>
 #include "movable_entity.h"
+#include "weapon.h"
 
 class Player : public MovableEntity {
 public:
@@ -13,9 +14,5 @@ public:
     void update(const float& deltaTime) override;
 
 protected:
-    const int MAX_BULLETS = 3;
-    int bullets = MAX_BULLETS;
-
-    Timer timerCooldown;
-    Timer timerRefill;
+    Weapon weapon;
 };
