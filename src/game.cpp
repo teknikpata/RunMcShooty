@@ -11,11 +11,12 @@ Game::Game() :
     window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
 
     textureManager.load("player", "assets/graphics/player.png");
+    textureManager.load("character", "assets/graphics/character_front.png");
     textureManager.load("platform", "assets/graphics/platform.png");
     textureManager.load("pillar", "assets/graphics/pillar.png");
     textureManager.load("projectile", "assets/graphics/projectile.png");
 
-    Sprite playerSprite{textureManager.get("player"), 2, 2, 1.f};
+    Sprite playerSprite{textureManager.get("character")};
     Sprite platformSprite{textureManager.get("platform")};
     Sprite pillarSprite{textureManager.get("pillar")};
 

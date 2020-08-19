@@ -5,6 +5,7 @@ Player::Player(const sf::Vector2f& position, const bool collidable, const Sprite
                RestrictedQueue<Event*> eventQueue) :
               weapon{10, 0.05f, 0.2f},
         MovableEntity(position, {}, collidable, sprite, eventQueue) {
+    speed = 2200.f;
 }
 
 Player::~Player() = default;
