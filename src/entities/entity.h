@@ -5,7 +5,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "events/event.h"
 #include "utils/collision_box.h"
-#include "entities/sprite.h"
+#include "graphic/sprite.h"
 #include "utils/restricted_queue.h"
 
 class Entity {

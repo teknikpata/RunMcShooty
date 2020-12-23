@@ -6,16 +6,16 @@
 
 class Sprite {
 public:
-    Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY,
+    Sprite(std::shared_ptr<sf::Texture> texture, unsigned int cellsX, unsigned int cellsY,
            const float& timePerCell);
 
-    Sprite(std::shared_ptr<sf::Texture> texture);
+    explicit Sprite(std::shared_ptr<sf::Texture> texture);
 
     ~Sprite();
 
     void update(const float& deltaTime);
 
-    void render(sf::RenderTarget* renderTarget);
+    void render(sf::RenderTarget& renderTarget);
 
     void setPosition(const sf::Vector2f& vector2);
 

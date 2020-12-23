@@ -16,7 +16,7 @@ void MovableEntity::update(const float& deltaTime) {
     setPosition(position);
 }
 
-void MovableEntity::render(sf::RenderTarget* renderTarget) {
+void MovableEntity::render(sf::RenderTarget& renderTarget) {
     sprite.render(renderTarget);
 }
 

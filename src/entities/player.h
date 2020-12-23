@@ -2,7 +2,9 @@
 
 #include <utils/timer.h>
 #include "movable_entity.h"
+#include "graphic/animation_controller.h"
 #include "weapon.h"
+
 
 class Player : public MovableEntity {
 public:
@@ -11,8 +13,10 @@ public:
 
     ~Player() override;
 
+
     void update(const float& deltaTime) override;
 
 protected:
     Weapon weapon;
+
 };

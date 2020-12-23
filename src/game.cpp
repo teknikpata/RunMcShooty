@@ -9,25 +9,8 @@ Game::Game() :
         camera{}
         , world{"1"} {
     window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "RunMcShooty");
-
-    textureManager.load("player", "assets/graphics/player.png");
-    textureManager.load("character", "assets/graphics/character_front.png");
-    textureManager.load("platform", "assets/graphics/platform.png");
-    textureManager.load("pillar", "assets/graphics/pillar.png");
-    textureManager.load("projectile", "assets/graphics/projectile.png");
-
-    Sprite playerSprite{textureManager.get("character")};
-    Sprite platformSprite{textureManager.get("platform")};
-    Sprite pillarSprite{textureManager.get("pillar")};
-
-    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue<Event*>{eventQueue}});
-    camera.follow(world.getPlayer(), {300, 200});
-
-    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event*>{eventQueue}});
+    initializeResources();
+    createWorld();
 }
 
 Game::~Game() {
@@ -56,8 +39,8 @@ void Game::run() {
                                 window->mapPixelToCoords(sf::Mouse::getPosition(*window)) - attackEvent->position;
                         direction = math::normalizeVector(direction);
                         world.addEntity(
-                                MovableEntity{attackEvent->position, direction, false, textureManager.get(
-                                        "projectile"), RestrictedQueue<Event*>{eventQueue}});
+                                MovableEntity{attackEvent->position, direction, false, Sprite{textureManager.get(
+                                        "projectile")}, RestrictedQueue<Event*>{eventQueue}});
                         break;
                     }
                     case Event::Type::Input: {
@@ -74,7 +57,6 @@ void Game::run() {
             }
             update(TimePerFrame.asSeconds());
         }
-        render();
     }
 }
 
@@ -120,4 +102,32 @@ void Game::render() {
     window->clear();
     world.render(window);
     window->display();
+}
+
+void Game::initializeResources() {
+    textureManager.load("player", "assets/graphics/player.png");
+    textureManager.load("character", "assets/graphics/character_front.png");
+    textureManager.load("platform", "assets/graphics/platform.png");
+    textureManager.load("pillar", "assets/graphics/pillar.png");
+    textureManager.load("projectile", "assets/graphics/projectile.png");
+    textureManager.load("walking_forward", "assets/graphics/walking_forward.png");
+    textureManager.load("walking_left", "assets/graphics/walking_left.png");
+    textureManager.load("walking_right", "assets/graphics/walking_right.png");
+}
+
+void Game::createWorld() {
+    Sprite playerWalkingFront{textureManager.get("walking_forward"), 4, 1, 0.1f};
+    Sprite playerWalkingLeft{textureManager.get("walking_left")};
+    Sprite playerWalkingRight{textureManager.get("walking_right")};
+    Sprite platformSprite{textureManager.get("platform")};
+    Sprite pillarSprite{textureManager.get("pillar")};
+
+    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerWalkingFront, RestrictedQueue<Event*>{eventQueue}});
+    camera.follow(world.getPlayer(), {300, 200});
+
+    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event*>{eventQueue}});
 }
