@@ -50,8 +50,8 @@ void Sprite::update(const float& deltaTime) {
 
 }
 
-void Sprite::render(sf::RenderTarget& renderTarget) {
-    renderTarget.draw(sprite);
+void Sprite::render(sf::RenderTarget* renderTarget) {
+    renderTarget->draw(sprite);
 }
 
 void Sprite::setPosition(const sf::Vector2f& position) {

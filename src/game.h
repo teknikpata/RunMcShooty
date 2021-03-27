@@ -23,10 +23,6 @@ private:
 
     void resolve(const Collisions& collisions);
 
-    void initializeResources();
-
-    void createWorld();
-
     World world;
     Camera camera;
     sf::RenderWindow* window;

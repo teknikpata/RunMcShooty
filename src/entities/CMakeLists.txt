@@ -3,6 +3,8 @@ set(ENTITIES_FILES
         entity.cpp
         movable_entity.h
         movable_entity.cpp
+        sprite.h
+        sprite.cpp
         static_entity.cpp
         static_entity.h
         player.cpp
@@ -10,4 +12,4 @@ set(ENTITIES_FILES
 
 add_library(entities ${ENTITIES_FILES})
 find_package(SFML 2.5.1 COMPONENTS graphics REQUIRED)
-target_link_libraries(entities graphic sfml-graphics)
+target_link_libraries(entities sfml-graphics)
