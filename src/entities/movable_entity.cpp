@@ -17,7 +17,7 @@ void MovableEntity::update(const float& deltaTime) {
 }
 
 void MovableEntity::render(sf::RenderTarget* renderTarget) {
-    sprite.render(renderTarget);
+    animator.render(renderTarget);
 }
 
 void MovableEntity::multiplyVelocity(const sf::Vector2f& vector) {

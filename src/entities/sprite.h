@@ -6,7 +6,7 @@
 
 class Sprite {
 public:
-    Sprite(std::shared_ptr<sf::Texture> texture, const unsigned int cellsX, const unsigned int cellsY,
+    Sprite(std::shared_ptr<sf::Texture> texture, unsigned int cellsX, unsigned int cellsY,
            const float& timePerCell);
 
     Sprite(std::shared_ptr<sf::Texture> texture);

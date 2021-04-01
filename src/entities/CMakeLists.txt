@@ -8,7 +8,7 @@ set(ENTITIES_FILES
         static_entity.cpp
         static_entity.h
         player.cpp
-        player.h)
+        player.h animator.h)
 
 add_library(entities ${ENTITIES_FILES})
 find_package(SFML 2.5.1 COMPONENTS graphics REQUIRED)

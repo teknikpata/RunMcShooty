@@ -16,18 +16,16 @@ Game::Game() :
     textureManager.load("pillar", "assets/graphics/pillar.png");
     textureManager.load("projectile", "assets/graphics/projectile.png");
 
-    Sprite playerSprite{textureManager.get("character")};
-    Sprite platformSprite{textureManager.get("platform")};
-    Sprite pillarSprite{textureManager.get("pillar")};
 
-    world.addPlayer(Player{sf::Vector2f(200, 225), true, playerSprite, RestrictedQueue<Event*>{eventQueue}});
+    world.addPlayer(Player{sf::Vector2f(200, 225), true, Sprite{textureManager.get("character")}, RestrictedQueue<Event*>{eventQueue}});
     camera.follow(world.getPlayer(), {300, 200});
 
-    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, platformSprite, RestrictedQueue<Event*>{eventQueue}});
-    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, pillarSprite, RestrictedQueue<Event*>{eventQueue}});
+
+    world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true, Sprite{textureManager.get("platform")}, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, Sprite{textureManager.get("platform")}, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{401, 400}, true, Sprite{textureManager.get("platform")}, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{0, 400}, true, Sprite{textureManager.get("platform")}, RestrictedQueue<Event*>{eventQueue}});
+    world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false, Sprite{textureManager.get("pillar")}, RestrictedQueue<Event*>{eventQueue}});
 }
 
 Game::~Game() {

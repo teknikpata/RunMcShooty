@@ -7,6 +7,7 @@
 #include "utils/collision_box.h"
 #include "entities/sprite.h"
 #include "utils/restricted_queue.h"
+#include "animator.h"
 
 class Entity {
 public:
@@ -41,6 +42,7 @@ protected:
     bool collidable;
     Sprite sprite;
     CollisionBox box;
+    Animator animator;
 
     RestrictedQueue<Event*> eventQueue;
 };

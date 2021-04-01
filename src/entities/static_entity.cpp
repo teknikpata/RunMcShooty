@@ -11,5 +11,5 @@ void StaticEntity::update(const float& deltaTime) {
 }
 
 void StaticEntity::render(sf::RenderTarget* renderTarget) {
-    sprite.render(renderTarget);
+    animator.render(renderTarget);
 }

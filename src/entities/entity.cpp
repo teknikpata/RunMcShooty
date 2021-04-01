@@ -6,8 +6,9 @@ eventQueue) :
         , collidable(collidable)
         , sprite(sprite)
         , eventQueue{eventQueue}
-        , box(position, sprite.getSize()) {
-    this->sprite.setPosition(position);
+        , box(position, sprite.getSize()),
+        animator{sprite}{
+    this->animator.setPosition(position);
 }
 
 Entity::~Entity() = default;
@@ -18,7 +19,7 @@ sf::Vector2f Entity::getPosition() const {
 
 void Entity::setPosition(const sf::Vector2f& newPosition) {
     position = newPosition;
-    sprite.setPosition(position);
+    animator.setPosition(position);
     box.setPosition(position);
 }
 
@@ -32,7 +33,7 @@ void Entity::setCollidable(const bool newCollidable) {
 
 void Entity::move(const sf::Vector2f& offset) {
     position += offset;
-    sprite.setPosition(position);
+    animator.setPosition(position);
     box.setPosition(position);
 }
 
