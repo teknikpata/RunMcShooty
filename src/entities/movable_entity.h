@@ -4,30 +4,27 @@
 
 class MovableEntity : public Entity {
 public:
-    MovableEntity(const sf::Vector2f& position, const sf::Vector2f& velocity, bool collidable, const Sprite& sprite,
-                  RestrictedQueue<Event*>
-                  eventQueue);
+  MovableEntity(const sf::Vector2f &position, const sf::Vector2f &velocity,
+                bool collidable, const Animator &animator,
+                RestrictedQueue<Event *> eventQueue);
 
-    ~MovableEntity() override;
+  ~MovableEntity() override;
+  void update(const float &deltaTime) override;
+  void render(sf::RenderTarget *renderTarget) override;
 
-    virtual void update(const float& deltaTime);
+  void addForce(const sf::Vector2f &force);
 
-    virtual void render(sf::RenderTarget* renderTarget);
+  // TODO: Should be handled event based?.
+  void notifyGrounded();
 
-    void addForce(const sf::Vector2f& force);
+  void multiplyVelocity(const sf::Vector2f &vector);
 
-    // TODO: Should be handled event based?.
-    void notifyGrounded();
-
-    void multiplyVelocity(const sf::Vector2f& vector);
-
-    // --------------------------------------
-    sf::Vector2f getVelocity() const;
+  sf::Vector2f getVelocity() const;
 
 protected:
-    bool grounded;
-    sf::Vector2f velocity;
-    float speed = 800.f;
-    float friction = 9.5f;
-    sf::Vector2f acceleration;
+  bool grounded;
+  sf::Vector2f velocity;
+  float speed = 800.f;
+  float friction = 9.5f;
+  sf::Vector2f acceleration;
 };

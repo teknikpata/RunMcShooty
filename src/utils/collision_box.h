@@ -11,6 +11,7 @@ public:
         NONE
     };
 
+    CollisionBox() = default;
     CollisionBox(const sf::Vector2f& position, const sf::Vector2f& size,
                  Constraints collisionCheck = Constraints::NONE);
 
