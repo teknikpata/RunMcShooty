@@ -11,9 +11,8 @@
 
 class Entity {
 public:
-  Entity(const sf::Vector2f &position, bool collidable, const Animator
-                                                            &animator,
-         RestrictedQueue<Event *> eventQueue);
+  Entity(const sf::Vector2f &position, bool collidable,
+         const Animator &animator, RestrictedQueue<Event *> eventQueue);
 
   virtual ~Entity();
 

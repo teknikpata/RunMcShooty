@@ -2,8 +2,8 @@
 
 Entity::Entity(const sf::Vector2f &position, const bool collidable,
                const Animator &animator, RestrictedQueue<Event *> eventQueue)
-    : position{position},
-      collidable{collidable}, animator{animator}, eventQueue{eventQueue} {
+    : position{position}, collidable{collidable}, animator{animator},
+      eventQueue{eventQueue} {
   this->animator.setPosition(position);
   box = CollisionBox{position, this->animator.getSize()};
 }

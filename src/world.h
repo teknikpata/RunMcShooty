@@ -1,42 +1,41 @@
 #pragma once
 
-#include "entities/static_entity.h"
 #include "entities/movable_entity.h"
 #include "entities/player.h"
-#include "utils/collision_data.h"
+#include "entities/static_entity.h"
 #include "events/event.h"
+#include "utils/collision_data.h"
 #include <memory>
 
 class World {
 public:
-    explicit World(std::string name);
+  explicit World(std::string name);
 
-    ~World();
+  ~World();
 
-    Collisions getCollisions();
+  Collisions getCollisions();
 
-    void update(const float& deltaTime);
+  void update(const float &deltaTime);
 
-    void render(sf::RenderTarget* target);
+  void render(sf::RenderTarget *target);
 
-    void addEntity(const StaticEntity& entity);
+  void addEntity(const StaticEntity &entity);
 
-    void addEntity(const MovableEntity& entity);
+  void addEntity(const MovableEntity &entity);
 
-    void addPlayer(const Player& entity);
+  void addPlayer(const Player &entity);
 
-    std::shared_ptr<Entity> getPlayer();
+  std::shared_ptr<Entity> getPlayer();
 
-    void handleEvent(Event* event);
+  void handleEvent(Event *event);
 
-    void load(const std::string& filePath) = delete;
+  void load(const std::string &filePath) = delete;
 
-    void save() = delete;
+  void save() = delete;
 
 private:
-    std::string name;
-    std::vector<std::shared_ptr<Entity>> entities;
-    std::vector<std::shared_ptr<MovableEntity>> movables;
-    std::shared_ptr<Player> player;
+  std::string name;
+  std::vector<std::shared_ptr<Entity>> entities;
+  std::vector<std::shared_ptr<MovableEntity>> movables;
+  std::shared_ptr<Player> player;
 };
-

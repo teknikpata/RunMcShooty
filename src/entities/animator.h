@@ -25,7 +25,7 @@ public:
   }
 
   void setState(AnimationState animationState) {
-    if (animationMap.count(animationState)){
+    if (animationMap.count(animationState)) {
       currentState = animationState;
     }
   }
