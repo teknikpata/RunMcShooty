@@ -30,6 +30,7 @@ Sprite::~Sprite() = default;
 void Sprite::update(const float &deltaTime) {
   if (!animated)
     return;
+
   elapsedTime += deltaTime;
   if (elapsedTime < timePerCell)
     return;
@@ -38,7 +39,6 @@ void Sprite::update(const float &deltaTime) {
 
   if (currentPosition.x + cellSize.x >= spriteSheetSize.x) {
     currentPosition.x = 0;
-
     if (currentPosition.y + cellSize.y >= spriteSheetSize.y)
       currentPosition.y = 0;
     else

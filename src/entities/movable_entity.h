@@ -1,10 +1,11 @@
 #pragma once
 
+#include "controller.h"
 #include "entity.h"
 
 class MovableEntity : public Entity {
-public:
-  MovableEntity(const sf::Vector2f &position, const sf::Vector2f &velocity,
+ public:
+  MovableEntity(const sf::Vector2f &position, std::shared_ptr<Controller> controller, const float &speed,
                 bool collidable, const Animator &animator,
                 RestrictedQueue<Event *> eventQueue);
 
@@ -21,10 +22,11 @@ public:
 
   sf::Vector2f getVelocity() const;
 
-protected:
+ protected:
+  std::shared_ptr<Controller> controller;
   bool grounded;
   sf::Vector2f velocity;
-  float speed = 800.f;
+  float speed;
   float friction = 9.5f;
   sf::Vector2f acceleration;
 };

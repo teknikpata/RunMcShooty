@@ -17,9 +17,9 @@ sf::RectangleShape createRectangle(const sf::Vector2f &position,
   rectangle.setPosition(position);
   return rectangle;
 };
-} // namespace
+}// namespace
 class Camera {
-public:
+ public:
   Camera() = default;
 
   ~Camera() = default;
@@ -70,7 +70,7 @@ public:
     // view.setCenter(target->getCenter());
   }
 
-private:
+ private:
   std::shared_ptr<Entity> target;
   sf::Vector2f trackingArea;
 };

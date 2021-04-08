@@ -4,7 +4,7 @@
 #include <memory>
 
 class Weapon {
-public:
+ public:
   Weapon(int maxBullets, float recoilTime, float refillTime)
       : maxBullets{maxBullets}, bullets{maxBullets},
         recoilTimer{recoilTime, "RecoilTimer"}, refillTimer{refillTime,
@@ -29,7 +29,7 @@ public:
   }
   bool ready() { return recoilTimer.done() && bullets > 0; }
 
-private:
+ private:
   Timer recoilTimer;
   Timer refillTimer;
   int bullets;

@@ -13,7 +13,7 @@ enum class AnimationState {
 };
 
 class Animator {
-public:
+ public:
   explicit Animator(const Sprite &sprite) : currentState{AnimationState::IDLE} {
     animationMap.emplace(AnimationState::IDLE,
                          std::make_shared<Sprite>(sprite));
@@ -46,7 +46,7 @@ public:
 
   sf::Vector2f getSize() { return animationMap[currentState]->getSize(); }
 
-private:
+ private:
   AnimationState currentState;
   std::unordered_map<AnimationState, std::shared_ptr<Sprite>> animationMap;
 };

@@ -3,7 +3,7 @@
 #include "entity.h"
 
 class StaticEntity : public Entity {
-public:
+ public:
   StaticEntity(const sf::Vector2f &position, bool collidable,
                const Animator &animator, RestrictedQueue<Event *> eventQueue);
 

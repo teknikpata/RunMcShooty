@@ -8,7 +8,7 @@
 #include <memory>
 
 class World {
-public:
+ public:
   explicit World(std::string name);
 
   ~World();
@@ -33,7 +33,7 @@ public:
 
   void save() = delete;
 
-private:
+ private:
   std::string name;
   std::vector<std::shared_ptr<Entity>> entities;
   std::vector<std::shared_ptr<MovableEntity>> movables;

@@ -1,10 +1,13 @@
 #pragma once
 
+#include <SFML/System/Vector2.hpp>
 #include <string>
 
 class Event {
-public:
-  enum class Type { Input, Move, Attack };
+ public:
+  enum class Type { Input,
+                    Move,
+                    Attack };
 
   Event(Type type) : type{type} {}
 
@@ -18,7 +21,7 @@ public:
 };
 
 class InputEvent : public Event {
-public:
+ public:
   InputEvent() : Event(Event::Type::Input) {}
 
   ~InputEvent() = default;
@@ -27,7 +30,7 @@ public:
 };
 
 class MoveEvent : public Event {
-public:
+ public:
   MoveEvent() : Event(Event::Type::Move) {}
 
   ~MoveEvent() = default;
@@ -36,7 +39,7 @@ public:
 };
 
 class AttackEvent : public Event {
-public:
+ public:
   AttackEvent(const sf::Vector2f &position, const sf::Vector2f &direction)
       : position{position}, direction{direction}, Event(Event::Type::Attack) {}
 

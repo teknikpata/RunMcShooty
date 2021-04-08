@@ -2,18 +2,20 @@
 
 #include <queue>
 
-template <class Object> class RestrictedQueue {
-public:
+template<class Object>
+class RestrictedQueue {
+ public:
   explicit RestrictedQueue(std::queue<Object> &queue) : queue{queue} {};
 
   ~RestrictedQueue() = default;
 
   void push(Object o) { queue.push(std::move(o)); }
 
-  template <class... Args> void emplace(Args &&...args) {
+  template<class... Args>
+  void emplace(Args &&...args) {
     queue.emplace(args...);
   }
 
-private:
+ private:
   std::queue<Object> &queue;
 };

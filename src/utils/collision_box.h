@@ -1,10 +1,13 @@
 #pragma once
 
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
 
 class CollisionBox {
-public:
-  enum class Constraints { VERTICAL, HORIZONTAL, NONE };
+ public:
+  enum class Constraints { VERTICAL,
+                           HORIZONTAL,
+                           NONE };
 
   CollisionBox() = default;
   CollisionBox(const sf::Vector2f &position, const sf::Vector2f &size,
@@ -50,7 +53,7 @@ public:
 
   Constraints getConstraints() const;
 
-private:
+ private:
   Constraints constraints;
   sf::Vector2f position;
   sf::Vector2f size;

@@ -10,7 +10,7 @@
 #include <SFML/System/Vector2.hpp>
 
 class Entity {
-public:
+ public:
   Entity(const sf::Vector2f &position, bool collidable,
          const Animator &animator, RestrictedQueue<Event *> eventQueue);
 
@@ -38,7 +38,7 @@ public:
   // TODO: move into MovableEntity class
   sf::Vector2f getVelocity();
 
-protected:
+ protected:
   sf::Vector2f position;
   bool collidable;
   CollisionBox box;

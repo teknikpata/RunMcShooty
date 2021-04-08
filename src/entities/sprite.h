@@ -5,7 +5,7 @@
 #include <string>
 
 class Sprite {
-public:
+ public:
   Sprite(std::shared_ptr<sf::Texture> texture, unsigned int cellsX,
          unsigned int cellsY, const float &timePerCell);
 
@@ -25,7 +25,7 @@ public:
 
   sf::Vector2f getSize() const;
 
-private:
+ private:
   std::shared_ptr<sf::Texture> texture;
   sf::Sprite sprite;
   std::string filePath;

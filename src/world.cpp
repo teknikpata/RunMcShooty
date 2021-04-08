@@ -24,8 +24,7 @@ Collisions World::getCollisions() {
         CollisionData::Side side = CollisionData::Side::NONE;
         // TODO: Clean up, this is way to complex than it really needs to be.
         // Check if completely vertical
-        if (box1.getLeft() > box2.getLeft() &&
-            box1.getRight() < box2.getRight()) {
+        if (box1.getLeft() > box2.getLeft() && box1.getRight() < box2.getRight()) {
           if (box1.getCenter().y > box2.getCenter().y) {
             distanceY = box2.getBottom() - box1.getTop();
             correctionY = distanceY;
@@ -35,8 +34,7 @@ Collisions World::getCollisions() {
             correctionY = -distanceY;
             side = CollisionData::Side::BOTTOM;
           }
-        } else if (box1.getTop() > box2.getTop() &&
-                   box1.getBottom() < box2.getBottom()) {
+        } else if (box1.getTop() > box2.getTop() && box1.getBottom() < box2.getBottom()) {
           if (box1.getCenter().x > box2.getCenter().x) {
             distanceX = box2.getRight() - box1.getLeft();
             correctionX = distanceX;

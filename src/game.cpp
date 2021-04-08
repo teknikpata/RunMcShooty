@@ -1,5 +1,8 @@
 #include "game.h"
+#include "entities/random_controller.h"
+#include "entities/trajectory_controller.h"
 #include "utils/math.h"
+#include <memory>
 
 const auto TimePerFrame = sf::seconds(1.0f / 60.f);
 constexpr int HEIGHT = 800;
@@ -16,19 +19,19 @@ Game::Game() : camera{}, world{"1"} {
   textureManager.load("platform", "assets/graphics/platform.png");
   textureManager.load("pillar", "assets/graphics/pillar.png");
   textureManager.load("projectile", "assets/graphics/projectile.png");
+  textureManager.load("enemy", "assets/graphics/enemy.png");
 
-  auto playerAnimator = Animator{textureManager.get("character_idle")};
-  playerAnimator.addAnimation(textureManager.get("character_front"),
+  auto playerAnimator = Animator{Sprite{textureManager.get("character_front"), 4, 1, 1.f}};
+  playerAnimator.addAnimation(Sprite{textureManager.get("character_front"), 4, 1, .15f},
                               AnimationState::WALKING_DOWN);
   playerAnimator.addAnimation(textureManager.get("character_left"),
                               AnimationState::WALKING_LEFT);
   playerAnimator.addAnimation(textureManager.get("character_right"),
                               AnimationState::WALKING_RIGHT);
 
-  world.addPlayer(Player{sf::Vector2f(200, 225), true, playerAnimator,
+  world.addPlayer(Player{sf::Vector2f{200, 225}, 2200.f, true, playerAnimator,
                          RestrictedQueue<Event *>{eventQueue}});
   camera.follow(world.getPlayer(), {300, 200});
-
   world.addEntity(StaticEntity{sf::Vector2f{200, 265}, true,
                                Animator{textureManager.get("platform")},
                                RestrictedQueue<Event *>{eventQueue}});
@@ -44,6 +47,19 @@ Game::Game() : camera{}, world{"1"} {
   world.addEntity(StaticEntity{sf::Vector2f{400, 275}, false,
                                Animator{textureManager.get("pillar")},
                                RestrictedQueue<Event *>{eventQueue}});
+
+  world.addEntity(MovableEntity{sf::Vector2f{-200, 300}, std::make_shared<RandomController>(3.5f), 75.f, true,
+                                Animator{textureManager.get("enemy")},
+                                RestrictedQueue<Event *>{eventQueue}});
+  world.addEntity(MovableEntity{sf::Vector2f{-400, 400}, std::make_shared<RandomController>(1.5f), 100.f, true,
+                                Animator{textureManager.get("enemy")},
+                                RestrictedQueue<Event *>{eventQueue}});
+  world.addEntity(MovableEntity{sf::Vector2f{-100, 200}, std::make_shared<RandomController>(2.f), 50.f, true,
+                                Animator{textureManager.get("enemy")},
+                                RestrictedQueue<Event *>{eventQueue}});
+  world.addEntity(MovableEntity{sf::Vector2f{-200, 100}, std::make_shared<RandomController>(4.f), 25.f, true,
+                                Animator{textureManager.get("enemy")},
+                                RestrictedQueue<Event *>{eventQueue}});
 }
 
 Game::~Game() { delete window; }
@@ -64,27 +80,26 @@ void Game::run() {
       while (!eventQueue.empty()) {
         auto *myEvent = eventQueue.front();
         switch (myEvent->type) {
-        case Event::Type::Attack: {
-          auto attackEvent = dynamic_cast<AttackEvent *>(myEvent);
-          auto direction =
-              window->mapPixelToCoords(sf::Mouse::getPosition(*window)) -
-              attackEvent->position;
-          direction = math::normalizeVector(direction);
-          world.addEntity(
-              MovableEntity{attackEvent->position, direction, false,
-                            Animator{textureManager.get("projectile")},
-                            RestrictedQueue<Event *>{eventQueue}});
-          break;
-        }
-        case Event::Type::Input: {
-          break;
-        }
-        case Event::Type::Move: {
-          break;
-        }
-        default: {
-          break;
-        }
+          case Event::Type::Attack: {
+            auto attackEvent = dynamic_cast<AttackEvent *>(myEvent);
+            auto direction =
+                window->mapPixelToCoords(sf::Mouse::getPosition(*window)) - attackEvent->position;
+            direction = math::normalizeVector(direction);
+            world.addEntity(
+                MovableEntity{attackEvent->position, std::make_shared<TrajectoryController>(direction), 800.f, false,
+                              Animator{textureManager.get("projectile")},
+                              RestrictedQueue<Event *>{eventQueue}});
+            break;
+          }
+          case Event::Type::Input: {
+            break;
+          }
+          case Event::Type::Move: {
+            break;
+          }
+          default: {
+            break;
+          }
         }
         eventQueue.pop();
       }
@@ -106,21 +121,21 @@ void Game::resolve(const Collisions &collisions) {
     auto movEntity = collision.e1;
     movEntity->move(collision.depth);
     switch (collision.side) {
-    case CollisionData::Side::TOP:
-      movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
-      break;
-    case CollisionData::Side::BOTTOM:
-      movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
-      movEntity->notifyGrounded();
-      break;
-    case CollisionData::Side::LEFT:
-      movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
-      break;
-    case CollisionData::Side::RIGHT:
-      movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
-      break;
-    case CollisionData::Side::NONE:
-      break;
+      case CollisionData::Side::TOP:
+        movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
+        break;
+      case CollisionData::Side::BOTTOM:
+        movEntity->multiplyVelocity(sf::Vector2f(1.f, 0.f));
+        movEntity->notifyGrounded();
+        break;
+      case CollisionData::Side::LEFT:
+        movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
+        break;
+      case CollisionData::Side::RIGHT:
+        movEntity->multiplyVelocity(sf::Vector2f(0.f, 1.f));
+        break;
+      case CollisionData::Side::NONE:
+        break;
     }
   }
 }

@@ -16,7 +16,7 @@ for (auto & p : std::experimental::filesystem::directory_iterator(path)) {
 */
 
 class File {
-public:
+ public:
   explicit File(std::string path) : path(std::move(path)) {}
 
   File() = delete;
@@ -31,6 +31,6 @@ public:
 
   void setPath(std::string &path) { this->path = path; }
 
-private:
+ private:
   std::string path;
 };

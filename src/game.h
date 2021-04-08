@@ -9,14 +9,14 @@
 #include <queue>
 
 class Game {
-public:
+ public:
   Game();
 
   ~Game();
 
   void run();
 
-private:
+ private:
   void update(const float &deltaTime);
 
   void render();

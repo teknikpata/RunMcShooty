@@ -1,12 +1,12 @@
 #include "player.h"
+#include "player_controller.h"
 #include "utils/math.h"
 #include <iostream>
 
-Player::Player(const sf::Vector2f &position, const bool collidable,
+Player::Player(const sf::Vector2f &position, const float &speed, const bool collidable,
                const Animator &animator, RestrictedQueue<Event *> eventQueue)
     : weapon{10, 0.05f, 0.2f},
-      MovableEntity(position, {}, collidable, animator, eventQueue) {
-  speed = 2200.f;
+      MovableEntity(position, std::make_shared<PlayerController>(), speed, collidable, animator, eventQueue) {
 }
 
 Player::~Player() = default;
@@ -25,7 +25,7 @@ void Player::update(const float &deltaTime) {
   }
 
   // TODO: clean this up, this is magic.
-  acceleration = getInput() * speed;
+  acceleration = controller->getInput(deltaTime) * speed;
   acceleration += -velocity * friction;
   position +=
       (acceleration * 0.85f * (deltaTime * deltaTime)) + (velocity * deltaTime);
@@ -50,20 +50,4 @@ void Player::setAnimationState() {
 
   if (velocity == sf::Vector2f{0, 0})
     animator.setState(AnimationState::IDLE);
-}
-sf::Vector2f Player::getInput() {
-  sf::Vector2f input = {};
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-    input += sf::Vector2f(-1, 0);
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-    input += sf::Vector2f(1, 0);
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-    input += sf::Vector2f(0, 1);
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-    input += sf::Vector2f(0, -1);
-  }
-  return input;
 }

@@ -7,7 +7,11 @@ class MovableEntity;
 class Entity;
 
 struct CollisionData {
-  enum class Side { TOP, BOTTOM, LEFT, RIGHT, NONE };
+  enum class Side { TOP,
+                    BOTTOM,
+                    LEFT,
+                    RIGHT,
+                    NONE };
 
   MovableEntity *e1;
   Entity *e2;

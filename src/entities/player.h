@@ -5,18 +5,17 @@
 #include <utils/timer.h>
 
 class Player : public MovableEntity {
-public:
-  Player(const sf::Vector2f &position, bool collidable,
+ public:
+  Player(const sf::Vector2f &position, const float &speed, bool collidable,
          const Animator &animator, RestrictedQueue<Event *> eventQueue);
 
   ~Player() override;
 
   void update(const float &deltaTime) override;
 
-protected:
+ protected:
   Weapon weapon;
 
-private:
-  sf::Vector2f getInput();
+ private:
   void setAnimationState();
 };

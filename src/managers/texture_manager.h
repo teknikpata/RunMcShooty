@@ -5,7 +5,7 @@
 #include <string>
 
 class TextureManager {
-public:
+ public:
   TextureManager();
 
   ~TextureManager();
@@ -14,6 +14,6 @@ public:
 
   std::shared_ptr<sf::Texture> get(const std::string &id);
 
-private:
+ private:
   std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 };

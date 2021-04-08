@@ -1,16 +1,17 @@
 #include "movable_entity.h"
-#include <iostream>
+#include <memory>
 
 MovableEntity::MovableEntity(const sf::Vector2f &position,
-                             const sf::Vector2f &velocity,
+                             std::shared_ptr<Controller> controller,
+                             const float &speed,
                              const bool collidable, const Animator &animator,
                              RestrictedQueue<Event *> eventQueue)
-    : velocity{velocity}, Entity(position, collidable, animator, eventQueue) {}
+    : controller{std::move(controller)}, speed{speed}, Entity(position, collidable, animator, eventQueue) {}
 
 MovableEntity::~MovableEntity() = default;
 
 void MovableEntity::update(const float &deltaTime) {
-  position += (speed * velocity) * deltaTime;
+  position += (speed * controller->getInput(deltaTime)) * deltaTime;
   animator.update(deltaTime);
   setPosition(position);
 }

@@ -2,7 +2,7 @@
 #include <string>
 
 class Timer {
-public:
+ public:
   explicit Timer(float maxValue, std::string name)
       : maxValue{maxValue}, currentTime{maxValue}, name{std::move(name)} {}
 
@@ -19,12 +19,10 @@ public:
   }
 
   std::string toString() {
-    return "Timer {name: (" + name + ") currentTime: (" +
-           std::to_string(currentTime) + ") maxValue: (" +
-           std::to_string(maxValue) + ")}";
+    return "Timer {name: (" + name + ") currentTime: (" + std::to_string(currentTime) + ") maxValue: (" + std::to_string(maxValue) + ")}";
   }
 
-private:
+ private:
   float maxValue;
   float currentTime;
   std::string name;
